@@ -38,3 +38,13 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+  .cardButtons {
+    display: flex;
+    /* justify-content: space-between; */
+  }
+
+  .branchBtns {
+    font-size: auto;
+    margin: 5px;
+  }
