@@ -4,17 +4,8 @@ import OrganizationCard from "../../components/OrganizationCard/OrganizationCard
 import { useNavigation } from "@react-navigation/native";
 import {
   Searchbar,
-  Button,
-  Card,
   Text as TextPaper,
-  Title,
-  Paragraph,
 } from "react-native-paper";
-// import Logo from "../../../assets/images/logo.png";
-// import CustomInput from "../../components/CustomInput";
-// import CustomButton from "../../components/CustomButton";
-// import SocialSignInButtons from "../../components/SocialSignInButtons";
-// import * as React from 'react';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -69,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   Title: {
-    fontSize: 50,
+    fontSize: 40,
   },
   searchBar: {
     marginTop: 30,

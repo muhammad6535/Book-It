@@ -9,6 +9,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import Apponitment from "../screens/AppointmentScreen/AppointmentScreen";
+import Confirmation from "../screens/ConfirmationScreen/ConfirmationScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,10 @@ const Navigation = () => {
         ></Stack.Screen>
         <Stack.Screen name="HomeScreen" component={HomeScreen}></Stack.Screen>
         <Stack.Screen name="Appointment" component={Apponitment}></Stack.Screen>
+        <Stack.Screen
+          name="Confirmation"
+          component={Confirmation}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
