@@ -16,7 +16,7 @@ export default class TimeInputs extends Component {
             label="Working Hours: From"
             id="from"
             autoComplete="from"
-            value="08:30"
+            defaultValue="08:30"
           />
           <TextField
             margin="normal"
@@ -26,7 +26,7 @@ export default class TimeInputs extends Component {
             label="Working Hours: To"
             id="to"
             autoComplete="to"
-            value="12:30"
+            defaultValue="12:30"
           />
           </div>
           <div className="workingHours">
@@ -39,7 +39,7 @@ export default class TimeInputs extends Component {
             label="Break: From"
             id="from"
             autoComplete="from"
-            value="08:30"
+            defaultValue="08:30"
           />
 
           <TextField
@@ -50,7 +50,7 @@ export default class TimeInputs extends Component {
             label="Break: To"
             id="to"
             autoComplete="to"
-            value="12:30"
+            defaultValue="12:30"
           />
         </div>
       </div>

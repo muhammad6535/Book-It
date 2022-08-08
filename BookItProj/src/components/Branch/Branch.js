@@ -6,7 +6,7 @@ import "./Branch.css";
 import BranchDetails from "../BranchDetails/BranchDetails";
 import BranchWorkingHours from "../BranchWorkingHours/BranchWorkingHours";
 
-function Branch() {
+function Branch(props) {
   // const [branch, setBranch] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow("");
@@ -15,11 +15,11 @@ function Branch() {
     <Card style={{ width: "18rem" }}>
       {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
       <Card.Body>
-        <Card.Title>Branch Name</Card.Title>
+        <Card.Title>{props.data.name} </Card.Title>
         <Card.Text>
-          <label>Name: aaa</label>
+          <label>Name: {props.data.name}</label>
           <br />
-          <label>Email: aaa@hotmail.com</label>
+          <label>Email: {props.data.email}</label>
           <br />
         </Card.Text>
 
@@ -46,7 +46,7 @@ function Branch() {
           </Modal.Header>
           <Modal.Body className="modalBody">
             {show == "infoModal" ? (
-              <BranchDetails className="infoModal" />
+              <BranchDetails data = {props}className="infoModal" />
             ) : null}
 
             {show == "workHoursModal" ? (
