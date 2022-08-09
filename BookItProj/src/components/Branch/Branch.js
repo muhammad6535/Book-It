@@ -46,11 +46,14 @@ function Branch(props) {
           </Modal.Header>
           <Modal.Body className="modalBody">
             {show == "infoModal" ? (
-              <BranchDetails data = {props}className="infoModal" />
+              <BranchDetails data={props} className="infoModal" />
             ) : null}
 
             {show == "workHoursModal" ? (
-              <BranchWorkingHours className="workHoursModal" />
+              <BranchWorkingHours
+                id={props.data.id}
+                className="workHoursModal"
+              />
             ) : null}
           </Modal.Body>
           <Modal.Footer>

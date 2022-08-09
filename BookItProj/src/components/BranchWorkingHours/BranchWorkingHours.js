@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import "./BranchWorkingHours.css";
 import TimeInputs from "./TimeInputs";
+import useFetch from "../../useFetch";
 
-let items = [
+let days = [
   "Sunday",
   "Monday",
   "Tuesday",
@@ -12,14 +13,18 @@ let items = [
   "Friday",
   "Saturday",
 ];
-export default class BranchWorkingHours extends Component {
-  render() {
-    return (
-      <Form>
-        {items.map((item, index) => {
-          return <TimeInputs title={item} />;
-        })}
-      </Form>
-    );
-  }
+
+function BranchWorkingHours(props) {
+  let { data: workHours } = useFetch(
+    `http://localhost:55100/api/WorkHours/WorkHours?branchId=`+ props.id
+  );
+  return (
+    <Form>
+      {/* {JSON.stringify(workHours)}; */}
+      {workHours && workHours.map((wh, index) => {
+        return <TimeInputs title={days[index]} data={wh}/>;
+      })}
+    </Form>
+  );
 }
+export default BranchWorkingHours;

@@ -14,6 +14,6 @@ namespace BookIt.models
 
         public DbSet<Organization> Organization { get; set; }
         public DbSet<Branch> Branch { get; set; }
-
+        public DbSet<WorkHours> WorkHours { get; set; }
     }
 }
