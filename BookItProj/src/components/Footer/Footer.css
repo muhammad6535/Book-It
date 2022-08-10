@@ -1,8 +1,6 @@
 .footerStyle {
-    position: fixed;
-  left: 0;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  color: white;
-  text-align: center;
+  clear: both;
 }

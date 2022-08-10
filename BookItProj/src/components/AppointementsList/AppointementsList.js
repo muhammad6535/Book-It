@@ -79,7 +79,7 @@ class ActionItemForum extends React.Component {
       <div className="formList">
         <form onSubmit={this.handleSubmission}>
           <div className="form-group">
-            <label for="actionItem">Action Item:</label>
+            {/* <label for="actionItem">Action Item:</label>
             <input
               type="text"
               className="form-control"
@@ -88,7 +88,7 @@ class ActionItemForum extends React.Component {
               value={this.state.actionItem}
               name="actionItem"
               required
-            />
+            /> */}
           </div>
           <div className="form-group">
             <label for="dueDate">Due Date:</label>
@@ -103,7 +103,7 @@ class ActionItemForum extends React.Component {
             />
           </div>
           <button type="submit" className="btn btn-default addBtn">
-            Add
+            Search
           </button>
         </form>
       </div>
