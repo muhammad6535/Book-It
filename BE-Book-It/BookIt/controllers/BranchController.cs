@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using BookIt.models;
 using System.Linq;
 //using Organization.models.Organization.CuurencyDto;
-using System.Net;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookIt.controllers

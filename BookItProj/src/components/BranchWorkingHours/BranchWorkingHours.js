@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import "./BranchWorkingHours.css";
 import TimeInputs from "./TimeInputs";
 import useFetch from "../../useFetch";
+import apiPath from '../../apiPath'
 
 let days = [
   "Sunday",
@@ -16,7 +17,7 @@ let days = [
 
 function BranchWorkingHours(props) {
   let { data: workHours } = useFetch(
-    `http://localhost:55100/api/WorkHours/WorkHours?branchId=`+ props.id
+    apiPath + `/WorkHours/WorkHours?branchId=`+ props.id
   );
   return (
     <Form>

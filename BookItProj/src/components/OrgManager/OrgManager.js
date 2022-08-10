@@ -5,10 +5,11 @@ import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./OrgManager.css";
 import useFetch from "../../useFetch";
+import apiPath from '../../apiPath'
 
 function OrgManager() {
   let { data: branches } = useFetch(
-    `http://localhost:55100/api/Branch/Branches?orgId=1`
+    apiPath + `/Branch/Branches?orgId=1`
   );
   return (
     <div>
