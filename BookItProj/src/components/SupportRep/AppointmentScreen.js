@@ -1,5 +1,3 @@
-import { green } from "@mui/material/colors";
-import { fontSize, fontStyle } from "@mui/system";
 import "./AppointmentScreen.css";
 
 function AppointmentScreen() {

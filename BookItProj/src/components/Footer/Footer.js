@@ -21,7 +21,7 @@ export default function App() {
           className="text-center p-3"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
         >
-          © 2020 Copyright:
+          © 2022 Copyright:
           <a className="text-white" href="#">
             Book-It.com
           </a>

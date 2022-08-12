@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace BookIt.models
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
@@ -15,5 +14,6 @@ namespace BookIt.models
         public DbSet<Organization> Organization { get; set; }
         public DbSet<Branch> Branch { get; set; }
         public DbSet<WorkHours> WorkHours { get; set; }
+        public DbSet<Appointment> Appointment { get; set; }
     }
 }
