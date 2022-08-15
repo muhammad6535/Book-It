@@ -11,7 +11,7 @@ function SupportRep() {
       <NavBar />
       <div className="container">
         <AppointementsList />
-        <AppointmentScreen />
+        {/* <AppointmentScreen /> */}
       </div>
       <Footer />
     </div>

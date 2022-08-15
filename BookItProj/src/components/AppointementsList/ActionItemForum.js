@@ -1,11 +1,38 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import "./AppointementsList.css";
+import useFetch from "../../useFetch";
+import apiPath from "../../apiPath";
+import axios from "axios";
+import ActionItemList from "./ActionItemList";
 
 function ActionItemForum() {
-  const [state,setState] = useState({
-    actionItem: "",
-    dueDate: "",
-  });
+  // const branchId = "1";
+  // const url =
+  //   apiPath +
+  //   `/Appointment/Appointments?BranchId=` +
+  //   branchId +
+  //   `&date=` +
+  //   dueDate;
+
+  //   const { data: appointments } = useFetch(
+  //     url
+  //   );
+
+  const [state, setState] = useState([
+    // {
+    // ActionItemsList: [
+    //   {},
+    //   // {
+    //   //   ActionItem: "ffff",
+    //   //   DueDate: "2018-08-09",
+    //   // },
+    //   // {
+    //   //   ActionItem: "dddd",
+    //   //   DueDate: "2018-08-09",
+    //   // },
+    // ],
+  // }
+]);
   const handleChange = (event) => {
     event.persist();
     // this.setState({ actionItem: event.target.value });
@@ -20,18 +47,50 @@ function ActionItemForum() {
           : prevState.dueDate,
     }));
   };
-  const handleSubmission = (event) => {
-    event.preventDefault();
-    // console.log(this.state.actionItem);
-    // console.log(this.state.dueDate);
-    this.props.addActionItemToState(state.actionItem, state.dueDate);
-    setState((prevState) => ({
-      // actionItem: "",
-      dueDate: "",
-    }));
+
+  const deleteActionItemFromState = (index) => {
+    const ActionItemsList = [...state.ActionItemsList];
+    ActionItemsList.splice(index, 1);
+    setState({ ActionItemsList });
   };
 
-    return (
+  const addActionItemToState = (actionItem, dueDate) => {
+    const branchId = "1";
+    const url =
+      apiPath +
+      `/Appointment/Appointments?BranchId=` +
+      branchId +
+      `&date=` +
+      dueDate;
+    const appointments = axios.get(url).then((res) => {
+      parseAppointments(res.data);
+    });
+
+    // let toBeAddedActionItem = {
+    //   ActionItem: actionItem,
+    //   DueDate: dueDate,
+    // };
+    // setState((prevState) => ({
+    //   // ActionItemsList: prevState.ActionItemsList.concat(toBeAddedActionItem),
+    // }));
+  };
+
+  function parseAppointments(res) {
+    setState(res);
+  }
+
+  const handleSubmission = (event) => {
+    event.preventDefault();
+    addActionItemToState(state.actionItem, state.dueDate);
+    // setState((res) => (
+    //   {
+    //   actionItem: res,
+    //   dueDate: res,
+    // }));
+  };
+
+  return (
+    <>
       <div className="formList">
         <form onSubmit={handleSubmission}>
           <div className="form-group">
@@ -63,7 +122,12 @@ function ActionItemForum() {
           </button>
         </form>
       </div>
-    );
+      <ActionItemList
+        actionItemsList={state}
+        deleteActionItemFromState={deleteActionItemFromState}
+      />
+    </>
+  );
 }
 
 export default ActionItemForum;

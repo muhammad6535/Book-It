@@ -21,7 +21,6 @@ function BranchWorkingHours(props) {
   );
   return (
     <Form>
-      {/* {JSON.stringify(workHours)}; */}
       {workHours && workHours.map((wh, index) => {
         return <TimeInputs title={days[index]} data={wh}/>;
       })}

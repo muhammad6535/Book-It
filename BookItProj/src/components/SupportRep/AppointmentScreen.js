@@ -1,6 +1,6 @@
 import "./AppointmentScreen.css";
 
-function AppointmentScreen() {
+function AppointmentScreen(props) {
   return (
     <>
       <div className="reminder">
@@ -12,16 +12,16 @@ function AppointmentScreen() {
             <br />
             <text style={{ color: "white", fontStyle: "bold" }}>
               {" "}
-              Name: Aaaa{" "}
+              Name: {props.appointment && props.appointment.customerName}{" "}
             </text>
             <br />
             <text style={{ color: "white", fontStyle: "bold" }}>
               {" "}
-              Time: 15:15{" "}
+              Time: {props.appointment && props.appointment.date.split("T")[1]}{" "}
             </text>
             <br />
             <text style={{ color: "white", fontStyle: "bold" }}>
-              Service: A{" "}
+              Service: {props.appointment && props.appointment.serviceId}{" "}
             </text>
             <br />
           </div>
