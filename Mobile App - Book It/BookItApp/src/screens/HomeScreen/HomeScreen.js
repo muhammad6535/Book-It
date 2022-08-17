@@ -12,20 +12,10 @@ const HomeScreen = () => {
   const onChangeSearch = (query) => setSearchQuery(query);
 
   // Get all Organizations from the DB
-  const [providers, setproviders] = useState([]);
-  useEffect(() => {
-    getData().then((organizations) => {
-      setproviders(organizations);
-    });
-  }, []);
-
+  const [providers, setproviders] = useState([getData()]);
   async function getData() {
-    try {
-      let { data } = await axios.get(apiPath + "/Organization/Organizations");
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
+    let { data } = await axios.get(apiPath + "/Organization/Organizations");
+    setproviders(data);
   }
 
   return (
@@ -41,11 +31,7 @@ const HomeScreen = () => {
       />
       <View style={styles.container}>
         {providers.map((item, index) => (
-          <OrganizationCard
-            key={index}
-            style={styles.item}
-            data={item}
-          />
+          <OrganizationCard key={index} style={styles.item} data={item} />
         ))}
       </View>
     </ScrollView>

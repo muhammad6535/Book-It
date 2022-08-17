@@ -5,24 +5,34 @@ import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import DropdownList from "../../components/DropdownList/DropdownList";
 import DatePicker from "../../components/DatePicker/DatePicker";
+import axios from "axios";
+import apiPath from "../../hooks/apiPath";
 
 const AppointmentScreen = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [branches, setBranches] = useState([getBranches(1)]);
+  async function getBranches(orgId) {
+    let { data } = await axios.get(apiPath + "/Branch/Branches?orgId=" + orgId);
+    setBranches(data);
+  }
 
   const navigation = useNavigation();
-
   const onRegisterPressed = () => {
-    navigation.navigate("Confirmation",{phone: phoneNumber});
+    navigation.navigate("Confirmation", { phone: phoneNumber });
   };
 
-  const branches = [
-    { label: "Tel Aviv", value: "1" },
-    { label: "Haifa", value: "2" },
-    { label: "Afula", value: "3" },
-  ];
+  // const branches = [
+  //   { label: "Tel Aviv", value: "1" },
+  //   { label: "Haifa", value: "2" },
+  //   { label: "Afula", value: "3" },
+  // ];
 
+  let branchesArr = [];
+  branches.map((b, index) => {
+    branchesArr.push({ label: b.name, value: b.id });
+  });
   const serviceTypes = [
     { label: "Type A", value: "1" },
     { label: "Type B", value: "2" },
@@ -56,7 +66,7 @@ const AppointmentScreen = () => {
         />
         <CustomInput placeholder={"Email"} value={email} setValue={setEmail} />
 
-        <DropdownList textTitle="Select Branch" data={branches} />
+        <DropdownList textTitle="Select Branch" data={branchesArr} />
         <DropdownList textTitle="Select Service Type" data={serviceTypes} />
         <DatePicker title="Choose Date" />
         <DropdownList
