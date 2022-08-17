@@ -1,10 +1,17 @@
 import React from "react";
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
-const DisplayAnImage = ({onPress}) => {
+const OrganizationCard = (props) => {
+  const onOrgPressed = () => {
+    navigation.navigate("Appointment");
+  };
+
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity onPress={onPress}style={styles.container}>
+    <TouchableOpacity onPress={onOrgPressed} style={styles.container}>
       <View style={styles.imgContainer}>
         <Image
           style={styles.tinyLogo}
@@ -14,7 +21,7 @@ const DisplayAnImage = ({onPress}) => {
         />
       </View>
       <Text style={styles.orgText} variant="titleMedium">
-        Org name
+        {props.data.name}
       </Text>
     </TouchableOpacity>
   );
@@ -52,4 +59,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-export default DisplayAnImage;
+export default OrganizationCard;

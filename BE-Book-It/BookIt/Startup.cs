@@ -27,6 +27,13 @@ namespace BookIt
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddCors(option =>
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,13 +54,17 @@ namespace BookIt
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthorization();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
+            app.UseCors();
+
 
             app.UseEndpoints(endpoints =>
             {

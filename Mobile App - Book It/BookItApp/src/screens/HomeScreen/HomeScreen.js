@@ -1,21 +1,32 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import OrganizationCard from "../../components/OrganizationCard/OrganizationCard";
 import { useNavigation } from "@react-navigation/native";
-import {
-  Searchbar,
-  Text as TextPaper,
-} from "react-native-paper";
+import { Searchbar, Text as TextPaper } from "react-native-paper";
+import axios from "axios";
+import apiPath from "../../hooks/apiPath";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
 
-  const onOrgPressed = () => {
-    navigation.navigate("Appointment");
-  };
+  // Get all Organizations from the DB
+  const [providers, setproviders] = useState([]);
+  useEffect(() => {
+    getData().then((organizations) => {
+      setproviders(organizations);
+    });
+  }, []);
+
+  async function getData() {
+    try {
+      let { data } = await axios.get(apiPath + "/Organization/Organizations");
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <ScrollView style={styles.root} showsVerticalScrollIndicator={false}>
@@ -29,19 +40,13 @@ const HomeScreen = () => {
         style={styles.searchBar}
       />
       <View style={styles.container}>
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
-        <OrganizationCard style={styles.item} onPress={onOrgPressed} />
+        {providers.map((item, index) => (
+          <OrganizationCard
+            key={index}
+            style={styles.item}
+            data={item}
+          />
+        ))}
       </View>
     </ScrollView>
   );
