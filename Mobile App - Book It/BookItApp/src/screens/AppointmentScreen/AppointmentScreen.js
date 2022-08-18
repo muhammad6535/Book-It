@@ -27,7 +27,7 @@ const AppointmentScreen = () => {
 
   const [branches, setBranches] = useState([]);
   const [serviceTypes, setServiceTypes] = useState([]);
-  const [workingHours, setWorkingHours] = useState([]);
+  const [workHours, setWorkHours] = useState([]);
   const [workDay, setWorkDay] = useState("");
 
   useEffect(async () => {
@@ -59,11 +59,12 @@ const AppointmentScreen = () => {
         "&dayWeek=" +
         workDay
     );
-    setWorkingHours(
-      workingHours.map((b, index) => {
-        return { label: b.name, value: b.id };
-      })
-    );
+    // setWorkingHours(
+    //   workingHours.map((b, index) => {
+    //     return { label: b.name, value: b.id };
+    //   })
+    // );
+    setWorkHours(workingHours);
   }, [branchId, orgId, workDay]);
 
   const navigation = useNavigation();
@@ -81,7 +82,7 @@ const AppointmentScreen = () => {
     { label: "17:00", value: "7" },
   ];
 
-  function getCountValue(workDay) {
+  function getDayNum(workDay) {
     let dayNames = {
       Sunday: "1",
       Monday: "2",
@@ -91,10 +92,10 @@ const AppointmentScreen = () => {
       Friday: "6",
       Saturday: "7",
     };
-    let dayNum = dayNames[workDay.split(':')[0].trim()];
-    console.log(aa);
-    setWorkDay(workDay);
+    let dayNum = dayNames[workDay.split(":")[0].trim()];
+    setWorkDay(dayNum);
   }
+  console.log(workHours);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -114,7 +115,7 @@ const AppointmentScreen = () => {
         <CustomInput placeholder={"Email"} value={email} setValue={setEmail} />
         <DropdownList textTitle="Select Branch" data={branches} />
         <DropdownList textTitle="Select Service Type" data={serviceTypes} />
-        <DatePicker title="Choose Date" getCountValue={getCountValue} />
+        <DatePicker title="Choose Date" getCountValue={getDayNum} />
         <DropdownList
           textTitle="Select Appointment"
           data={availableAppointments}
