@@ -3,7 +3,8 @@ import { Text, Button, TouchableOpacity, View, StyleSheet } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from "moment";
 
-const DatePicker = (props) => {
+
+const DatePicker = (props,getCountValue) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState("Select Date");
 
@@ -17,6 +18,7 @@ const DatePicker = (props) => {
 
   const handleConfirm = (date) => {
     setSelectedDate(Moment(date).format("dddd : D-MM-YYYY"));
+    props.getCountValue(Moment(date).format("dddd : D-MM-YYYY"));
     hideDatePicker();
   };
 

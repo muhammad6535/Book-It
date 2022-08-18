@@ -2,6 +2,7 @@
 using BookIt.models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace BookIt.controllers
 {
@@ -28,6 +29,20 @@ namespace BookIt.controllers
                 breakFrom = o.BreakFrom.Value.ToString("HH:mm"),
                 breakTo = o.BreakTo.Value.ToString("HH:mm"),
             }));
+        }
+
+        [HttpGet("WorkHoursByDate")]
+        public IActionResult GetWorkHoursByDate(int branchId, string dayWeek)
+        {
+            return Ok(_context.WorkHours.Include(o => o.Branch).Where(o => o.Day == dayWeek && o.BranchId == branchId)
+                .Select(o => new
+                {
+                    o,
+                    workFrom = o.WorkFrom.Value.ToString("HH:mm"),
+                    workTo = o.WorkTo.Value.ToString("HH:mm"),
+                    breakFrom = o.BreakFrom.Value.ToString("HH:mm"),
+                    breakTo = o.BreakTo.Value.ToString("HH:mm"),
+                }));
         }
     }
 }

@@ -16,8 +16,8 @@ namespace BookIt.models
         [ForeignKey("BranchId")]
         public virtual Branch Branch { get; set; }
 
-        //[ForeignKey("ServiceId")]
-        //public virtual Service Service { get; set; }
+        [ForeignKey("ServiceId")]
+        public virtual ServiceType ServiceType { get; set; }
     }
 
 

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
@@ -12,32 +12,64 @@ const AppointmentScreen = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [branches, setBranches] = useState([getBranches(1)]);
-  async function getBranches(orgId) {
-    let { data } = await axios.get(apiPath + "/Branch/Branches?orgId=" + orgId);
-    setBranches(data);
-  }
+
+  let branchId = 1;
+  let orgId = 1;
+
+  useEffect(async (url) => {
+    let { data } = await axios.get(apiPath + url + orgId);
+    setBranches(
+      data.map((b, index) => {
+        return { label: b.name, value: b.id };
+      })
+    );
+  }, []);
+
+  const [branches, setBranches] = useState([]);
+  const [serviceTypes, setServiceTypes] = useState([]);
+  const [workingHours, setWorkingHours] = useState([]);
+  const [workDay, setWorkDay] = useState("");
+
+  useEffect(async () => {
+    //branches
+    let { data: brnchs } = await axios.get(
+      apiPath + "/Branch/Branches?orgId=" + orgId
+    );
+    setBranches(
+      brnchs.map((b, index) => {
+        return { label: b.name, value: b.id };
+      })
+    );
+
+    //services
+    let { data: services } = await axios.get(
+      apiPath + "/ServiceType/ServiceTypes?branchId=" + branchId
+    );
+    setServiceTypes(
+      services.map((s, index) => {
+        return { label: s.name, value: s.id };
+      })
+    );
+
+    //WorkHours
+    let { data: workingHours } = await axios.get(
+      apiPath +
+        "/WorkHours/WorkHoursByDate?branchId=" +
+        branchId +
+        "&dayWeek=" +
+        workDay
+    );
+    setWorkingHours(
+      workingHours.map((b, index) => {
+        return { label: b.name, value: b.id };
+      })
+    );
+  }, [branchId, orgId, workDay]);
 
   const navigation = useNavigation();
   const onRegisterPressed = () => {
     navigation.navigate("Confirmation", { phone: phoneNumber });
   };
-
-  // const branches = [
-  //   { label: "Tel Aviv", value: "1" },
-  //   { label: "Haifa", value: "2" },
-  //   { label: "Afula", value: "3" },
-  // ];
-
-  let branchesArr = [];
-  branches.map((b, index) => {
-    branchesArr.push({ label: b.name, value: b.id });
-  });
-  const serviceTypes = [
-    { label: "Type A", value: "1" },
-    { label: "Type B", value: "2" },
-    { label: "Type C", value: "3" },
-  ];
 
   const availableAppointments = [
     { label: "15:30", value: "1" },
@@ -48,6 +80,21 @@ const AppointmentScreen = () => {
     { label: "16:45", value: "6" },
     { label: "17:00", value: "7" },
   ];
+
+  function getCountValue(workDay) {
+    let dayNames = {
+      Sunday: "1",
+      Monday: "2",
+      Tuesday: "3",
+      Wednesday: "4",
+      Thursday: "5",
+      Friday: "6",
+      Saturday: "7",
+    };
+    let dayNum = dayNames[workDay.split(':')[0].trim()];
+    console.log(aa);
+    setWorkDay(workDay);
+  }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -65,10 +112,9 @@ const AppointmentScreen = () => {
           setValue={setPhoneNumber}
         />
         <CustomInput placeholder={"Email"} value={email} setValue={setEmail} />
-
-        <DropdownList textTitle="Select Branch" data={branchesArr} />
+        <DropdownList textTitle="Select Branch" data={branches} />
         <DropdownList textTitle="Select Service Type" data={serviceTypes} />
-        <DatePicker title="Choose Date" />
+        <DatePicker title="Choose Date" getCountValue={getCountValue} />
         <DropdownList
           textTitle="Select Appointment"
           data={availableAppointments}

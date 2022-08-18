@@ -15,7 +15,7 @@ const DropdownList = (props) => {
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={props.data}
+        data={props.data ?props.data :[]}
         search
         maxHeight={300}
         labelField="label"
