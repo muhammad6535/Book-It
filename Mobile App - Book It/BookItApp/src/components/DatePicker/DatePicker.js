@@ -4,7 +4,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from "moment";
 
 
-const DatePicker = (props,getCountValue) => {
+const DatePicker = (props) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState("Select Date");
 

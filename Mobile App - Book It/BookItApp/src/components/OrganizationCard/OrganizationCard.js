@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const OrganizationCard = (props) => {
   const onOrgPressed = () => {
-    navigation.navigate("Appointment");
+    navigation.navigate("Appointment",{orgId:props.data.id});
   };
 
   const navigation = useNavigation();

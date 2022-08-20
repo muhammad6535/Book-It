@@ -7,14 +7,13 @@ import DropdownList from "../../components/DropdownList/DropdownList";
 import DatePicker from "../../components/DatePicker/DatePicker";
 import axios from "axios";
 import apiPath from "../../hooks/apiPath";
+import moment from "moment";
 
-const AppointmentScreen = () => {
+const AppointmentScreen = (props) => {
+  const orgId = props.route.params.orgId;
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
-  let branchId = 1;
-  let orgId = 1;
 
   useEffect(async (url) => {
     let { data } = await axios.get(apiPath + url + orgId);
@@ -27,8 +26,15 @@ const AppointmentScreen = () => {
 
   const [branches, setBranches] = useState([]);
   const [serviceTypes, setServiceTypes] = useState([]);
-  const [workHours, setWorkHours] = useState([]);
+  const [workHours, setWorkHours] = useState("");
   const [workDay, setWorkDay] = useState("");
+  const [selectedService, setSelectedService] = useState("");
+  const [availableAppointments, setAvailableAppointments] = useState([]);
+  const [workFrom, setWorkFrom] = useState("");
+  const [workTo, setWorkTo] = useState("");
+  const [breakFrom, setbreakFrom] = useState("");
+  const [breakTo, setBreakTo] = useState("");
+  const [branchId, setbranchId] = useState("");
 
   useEffect(async () => {
     //branches
@@ -47,7 +53,7 @@ const AppointmentScreen = () => {
     );
     setServiceTypes(
       services.map((s, index) => {
-        return { label: s.name, value: s.id };
+        return { label: s.name, value: s.id, item: s };
       })
     );
 
@@ -59,28 +65,14 @@ const AppointmentScreen = () => {
         "&dayWeek=" +
         workDay
     );
-    // setWorkingHours(
-    //   workingHours.map((b, index) => {
-    //     return { label: b.name, value: b.id };
-    //   })
-    // );
     setWorkHours(workingHours);
-  }, [branchId, orgId, workDay]);
+    parseAppointments();
+  }, [branchId, orgId, workDay, selectedService]);
 
   const navigation = useNavigation();
   const onRegisterPressed = () => {
     navigation.navigate("Confirmation", { phone: phoneNumber });
   };
-
-  const availableAppointments = [
-    { label: "15:30", value: "1" },
-    { label: "15:45", value: "2" },
-    { label: "16:00", value: "3" },
-    { label: "16:15", value: "4" },
-    { label: "16:30", value: "5" },
-    { label: "16:45", value: "6" },
-    { label: "17:00", value: "7" },
-  ];
 
   function getDayNum(workDay) {
     let dayNames = {
@@ -95,8 +87,35 @@ const AppointmentScreen = () => {
     let dayNum = dayNames[workDay.split(":")[0].trim()];
     setWorkDay(dayNum);
   }
-  console.log(workHours);
 
+  function getSelectedItem(selectedService) {
+    setSelectedService(selectedService);
+  }
+
+  const parseAppointments = () => {
+    setWorkFrom(
+      workHours[0] && new moment("2022-06-24T" + workHours[0].workFrom)
+    );
+    setWorkTo(workHours[0] && new moment("2022-06-24T" + workHours[0].workTo));
+    setbreakFrom(
+      workHours[0] && new moment("2022-06-24T" + workHours[0].breakFrom)
+    );
+    setBreakTo(
+      workHours[0] && new moment("2022-06-24T" + workHours[0].breakTo)
+    );
+
+    var appointments = [];
+    for (
+      let d = workFrom;
+      d < workTo;
+      d.add(selectedService.item.timeAvg, "m")
+    ) {
+      if (!(d >= breakFrom && d < breakTo)) {
+        appointments.push({ label: d.format("HH:mm"), value: d });
+      }
+    }
+    setAvailableAppointments(appointments);
+  };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
@@ -113,8 +132,16 @@ const AppointmentScreen = () => {
           setValue={setPhoneNumber}
         />
         <CustomInput placeholder={"Email"} value={email} setValue={setEmail} />
-        <DropdownList textTitle="Select Branch" data={branches} />
-        <DropdownList textTitle="Select Service Type" data={serviceTypes} />
+        <DropdownList
+          textTitle="Select Branch"
+          data={branches}
+          getSelectedBranch={setbranchId}
+        />
+        <DropdownList
+          textTitle="Select Service Type"
+          data={serviceTypes}
+          getSelectedItem={getSelectedItem}
+        />
         <DatePicker title="Choose Date" getCountValue={getDayNum} />
         <DropdownList
           textTitle="Select Appointment"
