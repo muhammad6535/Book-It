@@ -14,31 +14,20 @@ const AppointmentScreen = (props) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
-  useEffect(async (url) => {
-    let { data } = await axios.get(apiPath + url + orgId);
-    setBranches(
-      data.map((b, index) => {
-        return { label: b.name, value: b.id };
-      })
-    );
-  }, []);
-
   const [branches, setBranches] = useState([]);
   const [serviceTypes, setServiceTypes] = useState([]);
   const [workHours, setWorkHours] = useState("");
   const [workDay, setWorkDay] = useState("");
   const [selectedService, setSelectedService] = useState("");
-  const [availableAppointments, setAvailableAppointments] = useState([]);
-  const [workFrom, setWorkFrom] = useState("");
-  const [workTo, setWorkTo] = useState("");
-  const [breakFrom, setbreakFrom] = useState("");
-  const [breakTo, setBreakTo] = useState("");
-  const [branchId, setbranchId] = useState("");
+  const [availableAppointments, setAvailableAppointments] = useState("");
+  const [branchId, setBranchId] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [bookedAppointments, setBookedAppointments] = useState("");
+  const [timeAvg, setTimeAvg] = useState("");
 
   useEffect(async () => {
     //branches
-    let { data: brnchs } = await axios.get(
+    let { data: brnchs } = await callApi(
       apiPath + "/Branch/Branches?orgId=" + orgId
     );
     setBranches(
@@ -46,9 +35,11 @@ const AppointmentScreen = (props) => {
         return { label: b.name, value: b.id };
       })
     );
+  }, [orgId]);
 
+  useEffect(async () => {
     //services
-    let { data: services } = await axios.get(
+    let { data: services } = await callApi(
       apiPath + "/ServiceType/ServiceTypes?branchId=" + branchId
     );
     setServiceTypes(
@@ -56,18 +47,43 @@ const AppointmentScreen = (props) => {
         return { label: s.name, value: s.id, item: s };
       })
     );
+  }, [branchId]);
 
+  useEffect(async () => {
     //WorkHours
-    let { data: workingHours } = await axios.get(
+    let { data: workingHourss } = await callApi(
       apiPath +
         "/WorkHours/WorkHoursByDate?branchId=" +
         branchId +
         "&dayWeek=" +
         workDay
     );
-    setWorkHours(workingHours);
-    parseAppointments();
-  }, [branchId, orgId, workDay, selectedService]);
+    setWorkHours(workingHourss);
+  }, [branchId, workDay]);
+
+  useEffect(() => {
+    parseAppointments(workHours, bookedAppointments);
+  }, [workHours, bookedAppointments]);
+
+  useEffect(async () => {
+    //Booked Appointments
+    let { data: bookedApps } = await callApi(
+      apiPath +
+        "/Appointment/BookedAppiontmentsByDate?BranchId=" +
+        branchId +
+        "&date=" +
+        selectedDate +
+        "&serviceId=" +
+        selectedService.item.id
+    );
+    setBookedAppointments(bookedApps);
+  }, [selectedService, selectedDate, branchId]);
+
+  const callApi = async (api) => {
+    try {
+      return axios.get(api);
+    } catch (error) {}
+  };
 
   const navigation = useNavigation();
   const onRegisterPressed = () => {
@@ -90,32 +106,34 @@ const AppointmentScreen = (props) => {
 
   function getSelectedItem(selectedService) {
     setSelectedService(selectedService);
+    setTimeAvg(selectedService && selectedService.item.timeAvg);
   }
 
-  const parseAppointments = () => {
-    setWorkFrom(
-      workHours[0] && new moment("2022-06-24T" + workHours[0].workFrom)
-    );
-    setWorkTo(workHours[0] && new moment("2022-06-24T" + workHours[0].workTo));
-    setbreakFrom(
-      workHours[0] && new moment("2022-06-24T" + workHours[0].breakFrom)
-    );
-    setBreakTo(
-      workHours[0] && new moment("2022-06-24T" + workHours[0].breakTo)
-    );
-
+  async function parseAppointments(workingHourss, bookedApps) {
+    var reversedDate = selectedDate;
+    reversedDate = reversedDate.split("-");
+    let day = reversedDate[1];
+    let month = reversedDate[0];
+    let year = reversedDate[2];
+    var fixedFormatDate = year + "-" + month + "-" + day;
+    var wFrom = new moment(fixedFormatDate + "T" + workingHourss[0].workFrom);
+    var wTo = new moment(fixedFormatDate + "T" + workingHourss[0].workTo);
+    var bFrom = new moment(fixedFormatDate + "T" + workingHourss[0].breakFrom);
+    var bTo = new moment(fixedFormatDate + "T" + workingHourss[0].breakTo);
     var appointments = [];
-    for (
-      let d = workFrom;
-      d < workTo;
-      d.add(selectedService.item.timeAvg, "m")
-    ) {
-      if (!(d >= breakFrom && d < breakTo)) {
-        appointments.push({ label: d.format("HH:mm"), value: d });
+    bookedApps = bookedApps.map((app) => new moment(app) + "");
+
+    for (let d = wFrom; d < wTo; d.add(timeAvg, "m")) {
+      if (!(d >= bFrom && d < bTo)) {
+        appointments.push({ label: d.format("HH:mm"), value: new moment(d) });
       }
     }
-    setAvailableAppointments(appointments);
-  };
+
+    appointments = appointments.filter((app) => {
+      return !bookedApps.includes(app.value + "");
+    });
+    if (appointments.length > 0) setAvailableAppointments(appointments);
+  }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
@@ -135,14 +153,18 @@ const AppointmentScreen = (props) => {
         <DropdownList
           textTitle="Select Branch"
           data={branches}
-          getSelectedBranch={setbranchId}
+          getSelectedBranch={setBranchId}
         />
         <DropdownList
           textTitle="Select Service Type"
           data={serviceTypes}
           getSelectedItem={getSelectedItem}
         />
-        <DatePicker title="Choose Date" getCountValue={getDayNum} />
+        <DatePicker
+          title="Choose Date"
+          getCountValue={getDayNum}
+          getSelectedDate={setSelectedDate}
+        />
         <DropdownList
           textTitle="Select Appointment"
           data={availableAppointments}

@@ -1,2 +1,2 @@
-const apiPath = 'https://localhost:5001/api'
+const apiPath = 'http://localhost:5001/api'
 export default apiPath

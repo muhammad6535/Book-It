@@ -19,11 +19,19 @@ namespace BookIt.controllers
 
 
         [HttpGet("Appointments")]
-        public IActionResult GetAppointments(int branchId, int serviceId,DateTime date)
+        public IActionResult GetAppointments(int branchId, int serviceId, DateTime date)
         {
             return Ok(_context.Appointment.Include(o => o.Branch).ThenInclude(o => o.Organization)
-                .Where(o => o.BranchId == branchId && o.Date.Value>= date && o.Date.Value <= date.AddDays(1)));
+                .Where(o => o.BranchId == branchId && o.Date.Value >= date && o.Date.Value <= date.AddDays(1)));
             //return Ok(_context.Appointment.Include(o => o.Branch).Where(o => o.BranchId == branchId && o.ServiceId == serviceId));
+        }
+
+
+        [HttpGet("BookedAppiontmentsByDate")]
+        public IActionResult GetBookedAppiontmentsByDate(int branchId, int serviceId, DateTime date)
+        {
+            return Ok(_context.Appointment.Include(o => o.ServiceType).Include(o => o.Branch).ThenInclude(o => o.Organization)
+                .Where(o => o.BranchId == branchId && o.Date.Value >= date && o.Date.Value <= date.AddDays(1) && o.ServiceId == serviceId).Select(o => o.Date.Value));
         }
     }
 }

@@ -19,6 +19,7 @@ const DatePicker = (props) => {
   const handleConfirm = (date) => {
     setSelectedDate(Moment(date).format("dddd : D-MM-YYYY"));
     props.getCountValue(Moment(date).format("dddd : D-MM-YYYY"));
+    props.getSelectedDate(new Moment(date).format("MM-D-YYYY"))
     hideDatePicker();
   };
 
