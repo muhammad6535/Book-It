@@ -28,16 +28,16 @@ namespace BookIt.controllers
 
 
         [HttpPut("UpdateBranchDetails")]
-        public IActionResult UpdateBranchDetails(int branchId, string name, string email, string phone, string address,
+        public IActionResult UpdateBranchDetails(string branchId, string name, string email, string phone, string address,
             int? serviceId, int timeAvg, string serviceName)
         {
             try
             {
-                Branch branch = _context.Branch.FirstOrDefault(o => o.Id == branchId);
-                branch.Name = name;
-                branch.Email = email;
-                branch.Phone = phone;
-                branch.Address = address;
+                Branch branch = _context.Branch.FirstOrDefault(o => o.Id == int.Parse(branchId.Trim()));
+                branch.Name = name.Trim();
+                branch.Email = email.Trim();
+                branch.Phone = phone.Trim();
+                branch.Address = address.Trim();
                 if (serviceId.HasValue)
                 {
                     ServiceType serviceType = _context.ServiceType.FirstOrDefault(o => o.Id == serviceId.Value);

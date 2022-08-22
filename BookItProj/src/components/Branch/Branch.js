@@ -10,6 +10,9 @@ function Branch(props) {
   // const [branch, setBranch] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow("");
+  const handleSaveChanges = ()=>{
+    handleClose();
+  };
 
   return (
     <Card style={{ width: "18rem" }}>
@@ -48,7 +51,7 @@ function Branch(props) {
           </Modal.Header>
           <Modal.Body className="modalBody">
             {show == "infoModal" ? (
-              <BranchDetails data={props} branchId={props.data.id}  className="infoModal" />
+              <BranchDetails data={props} branchId={props.data.id} saveCloseModal ={handleSaveChanges} closeModal={handleClose}  className="infoModal" />
             ) : null}
 
             {show == "workHoursModal" ? (
@@ -58,14 +61,7 @@ function Branch(props) {
               />
             ) : null}
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
+          
         </Modal>
       </Card.Body>
     </Card>

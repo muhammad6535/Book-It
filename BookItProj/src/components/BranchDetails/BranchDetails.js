@@ -9,6 +9,8 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import axios from "axios";
 import apiPath from "../../apiPath";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 function BranchDetails(props) {
   const [services, setServices] = useState([]);
@@ -16,11 +18,12 @@ function BranchDetails(props) {
     name: "Service Type",
     id: "",
   });
+  const [name, setName] = useState(props.data.data.name);
+  const [email, setEmail] = useState(props.data.data.email);
+  const [phone, setPhone] = useState(props.data.data.phone);
+  const [address, setAddress] = useState(props.data.data.address);
+  const [branchId, setBranchId] = useState(props.data.data.id);
 
-  const handleChange = (event) => {
-    console.log("event", event.target);
-    // setSelectedService(event.target.value);
-  };
   useEffect(() => {
     getServices();
   }, []);
@@ -28,15 +31,45 @@ function BranchDetails(props) {
   async function getServices() {
     let services = await (
       await axios.get(
-        apiPath + `/ServiceType/ServiceTypes?branchId=${props.branchId}`
+        apiPath + `/ServiceType/ServiceTypes?branchId=${branchId}`
       )
     )?.data;
-
     setServices(services);
     console.log("services", services);
   }
+
+  const handleSubmit = async (e) => {
+    try {
+      console.log("aa -> ", props.branchId);
+      var selectedServiceParams = "";
+      console.log(selectedService);
+      if (selectedService.id.length > 0) {
+        selectedServiceParams = selectedService?.id
+          ? `&serviceId=${selectedService?.id || ""}`
+          : "" + selectedService?.timeAvg
+          ? `&timeAvg=${selectedService?.timeAvg || ""}`
+          : "" + selectedService?.name
+          ? `&serviceName=${selectedService?.name || ""}`
+          : "";
+      }
+      const response = axios.put(
+        `${apiPath}/Branch/UpdateBranchDetails?` +
+          `name=${name}` +
+          `&email=${email}` +
+          `&phone=${phone}` +
+          `&branchId=${props.branchId}` +
+          selectedServiceParams +
+          `&address=${address}`
+      );
+      alert("Details has been updated successfully");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    // props.saveCloseModal();
+  };
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <TextField
         margin="normal"
         required
@@ -45,7 +78,10 @@ function BranchDetails(props) {
         label="Name"
         id="name"
         autoComplete="current-password"
-        defaultValue={props.data.data.name}
+        defaultValue={name}
+        onChange={(e) => {
+          setName(e.target.value);
+        }}
       />
       <TextField
         margin="normal"
@@ -56,7 +92,10 @@ function BranchDetails(props) {
         name="email"
         autoComplete="email"
         autoFocus
-        defaultValue={props.data.data.email}
+        defaultValue={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
       />
       <TextField
         margin="normal"
@@ -67,7 +106,10 @@ function BranchDetails(props) {
         name="address"
         autoComplete="address"
         autoFocus
-        defaultValue={props.data.data.address}
+        defaultValue={address}
+        onChange={(e) => {
+          setAddress(e.target.value);
+        }}
       />
       <TextField
         margin="normal"
@@ -78,7 +120,10 @@ function BranchDetails(props) {
         name="Phone"
         autoComplete="Phone"
         autoFocus
-        defaultValue={props.data.data.phone}
+        defaultValue={phone}
+        onChange={(e) => {
+          setPhone(e.target.value);
+        }}
       />
       <FormControl fullWidth style={{ marginTop: "10px" }}>
         <InputLabel id="serviceType">Service Type</InputLabel>
@@ -135,10 +180,17 @@ function BranchDetails(props) {
             setSelectedService({ ...selectedService, timeAvg: e.target.value })
           }
           value={selectedService?.timeAvg}
-          // defaultValue={selectedService?.value?.timeAvg}
         />
       ) : null}
-      {JSON.stringify(selectedService)}
+
+      <Modal.Footer>
+        <Button variant="secondary" onClick={props.closeModal}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleSubmit}>
+          Save Changes
+        </Button>
+      </Modal.Footer>
     </Form>
   );
 }
