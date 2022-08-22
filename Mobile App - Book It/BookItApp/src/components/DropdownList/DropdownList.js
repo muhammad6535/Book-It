@@ -6,7 +6,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 const DropdownList = (props) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  
+
   return (
     <>
       <Dropdown
@@ -15,7 +15,7 @@ const DropdownList = (props) => {
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={props.data ?props.data :[]}
+        data={props.data ? props.data : []}
         search
         maxHeight={300}
         labelField="label"
@@ -29,7 +29,8 @@ const DropdownList = (props) => {
           setValue(item.value);
           setIsFocus(false);
           props.getSelectedItem && props.getSelectedItem(item);
-          props.getSelectedBranch && props.getSelectedBranch(item.value)
+          props.getSelectedBranch && props.getSelectedBranch(item.value);
+          props.selectedAppointment && props.selectedAppointment(item);
         }}
         renderLeftIcon={() => (
           <AntDesign

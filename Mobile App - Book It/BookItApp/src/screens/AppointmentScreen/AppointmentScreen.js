@@ -24,6 +24,7 @@ const AppointmentScreen = (props) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [bookedAppointments, setBookedAppointments] = useState("");
   const [timeAvg, setTimeAvg] = useState("");
+  const [selectedAppointment, setSelectedAppointment] = useState("");
 
   useEffect(async () => {
     //branches
@@ -87,7 +88,66 @@ const AppointmentScreen = (props) => {
 
   const navigation = useNavigation();
   const onRegisterPressed = () => {
-    navigation.navigate("Confirmation", { phone: phoneNumber });
+    let flag = 1;
+    if (fullName.length <= 3) {
+      console.log("Error! put a valid name");
+    }
+    if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
+      flag = 0;
+      console.log("Error! please enter a valid email");
+    }
+    if (phoneNumber.length != 10) {
+      flag = 0;
+      console.log("Error! please enter a valid phone number - 10 numbers");
+    }
+    if (branchId <= 0) {
+      flag = 0;
+      console.log("Error! please choose Branch");
+    }
+    if (selectedService.length <= 0) {
+      flag = 0;
+      console.log("Error! please choose Service");
+    }
+    if (selectedDate.length <= 0) {
+      flag = 0;
+      console.log("Error! please choose Date");
+    }
+    if (selectedAppointment.length <= 0) {
+      flag = 0;
+      console.log("Error! please choose Appointment");
+    }
+    if (flag == 1) {
+      insertAppointment();
+      navigation.navigate("Confirmation", { phone: phoneNumber });
+    }
+  };
+
+  const insertAppointment = async () => {
+    try {
+      let fixedDateFormat = new moment(selectedAppointment["value"]).format(
+        "MM-D-YYYY HH:mm"
+      );
+      // console.log(fullName + " " + email  + " " +phoneNumber + " "+ branchId + " "+ selectedService.item.id + " " +fixedDateFormat
+      // );
+      const response = await axios.post(
+        apiPath +
+          "/Appointment/InsertAppointment?name=" +
+          fullName +
+          "&email=" +
+          email +
+          "&phone=" +
+          phoneNumber +
+          "&branchId=" +
+          branchId +
+          "&serviceId=" +
+          selectedService.item.id +
+          "&date=" +
+          fixedDateFormat
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   function getDayNum(workDay) {
@@ -164,10 +224,12 @@ const AppointmentScreen = (props) => {
           title="Choose Date"
           getCountValue={getDayNum}
           getSelectedDate={setSelectedDate}
+          maxDate={moment().toDate()}
         />
         <DropdownList
           textTitle="Select Appointment"
           data={availableAppointments}
+          selectedAppointment={setSelectedAppointment}
         />
 
         <CustomButton text="Submit" onPress={onRegisterPressed} />

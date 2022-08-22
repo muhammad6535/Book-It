@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, Button, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Moment from "moment";
 
@@ -19,7 +19,7 @@ const DatePicker = (props) => {
   const handleConfirm = (date) => {
     setSelectedDate(Moment(date).format("dddd : D-MM-YYYY"));
     props.getCountValue(Moment(date).format("dddd : D-MM-YYYY"));
-    props.getSelectedDate(new Moment(date).format("MM-D-YYYY"))
+    props.getSelectedDate(new Moment(date).format("MM-D-YYYY"));
     hideDatePicker();
   };
 
@@ -32,6 +32,7 @@ const DatePicker = (props) => {
         mode="date"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        minimumDate= {Moment().toDate()}
       />
     </TouchableOpacity>
   );
@@ -46,11 +47,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     borderColor: "#38577B",
-    borderWidth:1,
+    borderWidth: 1,
   },
   text: {
     fontWeight: "bold",
-    color: '#38577B',
+    color: "#38577B",
   },
 });
 
