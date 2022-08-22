@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import "./BranchWorkingHours.css";
 import TimeInputs from "./TimeInputs";
 import useFetch from "../../useFetch";
-import apiPath from '../../apiPath'
+import apiPath from "../../apiPath";
 
 let days = [
   "Sunday",
@@ -17,13 +17,14 @@ let days = [
 
 function BranchWorkingHours(props) {
   let { data: workHours } = useFetch(
-    apiPath + `/WorkHours/WorkHours?branchId=`+ props.id
+    apiPath + `/WorkHours/WorkHours?branchId=` + props.id
   );
   return (
     <Form>
-      {workHours && workHours.map((wh, index) => {
-        return <TimeInputs title={days[index]} data={wh}/>;
-      })}
+      {workHours &&
+        workHours.map((wh, index) => {
+          return <TimeInputs title={days[index]} data={wh} />;
+        })}
     </Form>
   );
 }

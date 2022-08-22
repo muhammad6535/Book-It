@@ -41,12 +41,14 @@ function Branch(props) {
           </Button>
         </div>
         <Modal className="BranchModal" show={show} onHide={handleClose}>
+          
+          
           <Modal.Header closeButton>
             <Modal.Title>Branch Details</Modal.Title>
           </Modal.Header>
           <Modal.Body className="modalBody">
             {show == "infoModal" ? (
-              <BranchDetails data={props} className="infoModal" />
+              <BranchDetails data={props} branchId={props.data.id}  className="infoModal" />
             ) : null}
 
             {show == "workHoursModal" ? (
