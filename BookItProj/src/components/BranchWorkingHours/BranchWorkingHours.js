@@ -27,7 +27,7 @@ function BranchWorkingHours(props) {
 
   const handleSubmit = (e) => {
     dataToUpdate.forEach(async (branchDetails, index) => {
-      if(!!branchDetails.dayNum) {
+      if (!!branchDetails.dayNum) {
         let workFrom = branchDetails.workFrom;
         let workTo = branchDetails.workTo;
         let breakFrom = branchDetails.breakFrom;
@@ -46,18 +46,20 @@ function BranchWorkingHours(props) {
         var bt = breakTo
           ? new moment("1900-01-01T" + breakTo).format("MM-D-YYYY HH:mm")
           : "";
-  
-        var url = `${apiPath}/WorkHours/UpdateWorkHours?`+
-        `BranchId=${props.id}` +
-        `&dayWeek=${dayNum}` +
-        `&workFrom=${wf}`+
-       `&workTo=${wt}` +
-      `&isDayOff=${isDayOff}` + 
-       bf.length>0 ? `&breakFrom=${bf}`:''+
-       bt.length>0? `&breakTo=${bt}` : '';
+
+        
+        var breakParams = bf.length>0 && bt.length>0? `&breakFrom=${bf}` + `&breakTo=${bt}` :  `&breakFrom=1900-01-01 13:00:00.000` + `&breakTo=1900-01-01 13:00:00.000`;
+        var url =
+          `${apiPath}/WorkHours/UpdateWorkHours?` +
+          `BranchId=${props.id}` +
+          `&dayWeek=${dayNum}` +
+          `&workFrom=${wf}` +
+          `&workTo=${wt}` +
+          `&isDayOff=${isDayOff}` + breakParams;
+         
         console.log(url);
         try {
-        const response = await axios.put(url);
+          const response = await axios.put(url);
           console.log(response);
         } catch (error) {
           console.log(error);

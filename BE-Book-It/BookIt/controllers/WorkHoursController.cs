@@ -57,8 +57,8 @@ namespace BookIt.controllers
                     return BadRequest("Work Hours Not Found");
                 workHours.WorkFrom = workFrom;
                 workHours.WorkTo = workTo;
-                workHours.BreakFrom = breakFrom;
-                workHours.BreakTo = breakTo;
+                workHours.BreakFrom = breakTo.Subtract(breakFrom).TotalMinutes != 0 ? breakFrom : null;
+                workHours.BreakTo = breakTo.Subtract(breakFrom).TotalMinutes != 0 ? breakTo: null;
                 workHours.IsDayOff = isDayOff;
                 _context.SaveChanges();
                 return Ok();
