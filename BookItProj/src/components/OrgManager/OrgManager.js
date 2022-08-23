@@ -5,7 +5,9 @@ import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./OrgManager.css";
 import useFetch from "../../useFetch";
-import apiPath from '../../apiPath'
+import apiPath from '../../apiPath';
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 function OrgManager() {
   let { data: branches } = useFetch(
@@ -24,6 +26,7 @@ function OrgManager() {
 
       </div>
       <Footer />
+     
     </div>
   );
 }

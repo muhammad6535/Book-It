@@ -38,7 +38,6 @@ namespace BookIt.controllers
         }
 
 
-
         [HttpPost("InsertAppointment")]
         public IActionResult InsertAppointment(string name,string email,string phone,int branchId, int serviceId, DateTime date)
         {

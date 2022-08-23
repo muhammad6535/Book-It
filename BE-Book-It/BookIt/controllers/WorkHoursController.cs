@@ -34,7 +34,7 @@ namespace BookIt.controllers
         [HttpGet("WorkHoursByDate")]
         public IActionResult GetWorkHoursByDate(int branchId, string dayWeek)
         {
-            return Ok(_context.WorkHours.Include(o => o.Branch).Where(o => o.Day == dayWeek && o.BranchId == branchId)
+            return Ok(_context.WorkHours.Include(o => o.Branch).Where(o => o.Day == dayWeek && o.BranchId == branchId && o.IsDayOff == false)
                 .Select(o => new
                 {
                     o,
@@ -43,6 +43,30 @@ namespace BookIt.controllers
                     breakFrom = o.BreakFrom.Value.ToString("HH:mm"),
                     breakTo = o.BreakTo.Value.ToString("HH:mm"),
                 }));
+        }
+
+
+        [HttpPut("UpdateWorkHours")]
+        public IActionResult UpdateWorkHours(int branchId, string dayWeek, DateTime workFrom, DateTime workTo,
+            DateTime breakFrom, DateTime breakTo, bool isDayOff)
+        {
+            try
+            {
+                WorkHours workHours = _context.WorkHours.FirstOrDefault(o => o.BranchId == branchId && o.Day == dayWeek);
+                if (workHours == null)
+                    return BadRequest("Work Hours Not Found");
+                workHours.WorkFrom = workFrom;
+                workHours.WorkTo = workTo;
+                workHours.BreakFrom = breakFrom;
+                workHours.BreakTo = breakTo;
+                workHours.IsDayOff = isDayOff;
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

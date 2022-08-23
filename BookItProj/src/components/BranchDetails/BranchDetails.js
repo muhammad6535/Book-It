@@ -1,7 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Form from "react-bootstrap/Form";
-// import Select from '@mui/material/Select';
 import "./BranchDetails.css";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -35,14 +34,11 @@ function BranchDetails(props) {
       )
     )?.data;
     setServices(services);
-    console.log("services", services);
   }
 
   const handleSubmit = async (e) => {
     try {
-      console.log("aa -> ", props.branchId);
       var selectedServiceParams = "";
-      console.log(selectedService);
       if (selectedService.id.length > 0) {
         selectedServiceParams = selectedService?.id
           ? `&serviceId=${selectedService?.id || ""}`
@@ -66,7 +62,7 @@ function BranchDetails(props) {
     } catch (error) {
       console.log(error);
     }
-    // props.saveCloseModal();
+    props.saveCloseModal();
   };
   return (
     <Form onSubmit={handleSubmit}>

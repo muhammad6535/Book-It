@@ -18,8 +18,6 @@ namespace BookIt.controllers
             _context = context;
         }
 
-
-
         [HttpGet("Branches")]
         public IActionResult GetOrganization(int orgId)
         {
@@ -34,6 +32,10 @@ namespace BookIt.controllers
             try
             {
                 Branch branch = _context.Branch.FirstOrDefault(o => o.Id == int.Parse(branchId.Trim()));
+                if (branch == null)
+                {
+                    return BadRequest("Branch Not Found!");
+                }
                 branch.Name = name.Trim();
                 branch.Email = email.Trim();
                 branch.Phone = phone.Trim();
@@ -45,12 +47,12 @@ namespace BookIt.controllers
                     serviceType.Name = serviceName;
                 }
                 _context.SaveChanges();
+                return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            return Ok();
         }
     }
 
