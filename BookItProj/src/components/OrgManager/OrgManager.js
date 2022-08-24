@@ -8,7 +8,7 @@ import useFetch from "../../useFetch";
 import apiPath from "../../apiPath";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import BranchModal from "../BranchModal/BranchModal";
+import BranchModal from "../NewBranchModal/BranchModal";
 import {useLocation} from 'react-router-dom';
 
 

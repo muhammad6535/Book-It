@@ -49,12 +49,14 @@ function BranchDetails(props) {
   const handleSubmit = async (e) => {
     try {
       var selectedServiceParams = "";
-      if (selectedService.id > 0) {
-        selectedServiceParams =
-          `&serviceId=${selectedService.id || ""}` +
-          `&timeAvg=${selectedService.timeAvg || ""}` +
-          `&serviceName=${selectedService.name || ""}`;
-        console.log(selectedService.name);
+      if (selectedService.id.length > 0) {
+        selectedServiceParams = selectedService?.id
+          ? `&serviceId=${selectedService?.id || ""}`
+          : "" + selectedService?.timeAvg
+          ? `&timeAvg=${selectedService?.timeAvg || ""}`
+          : "" + selectedService?.name
+          ? `&serviceName=${selectedService?.name || ""}`
+          : "";
       }
       const response = axios.put(
         `${apiPath}/Branch/UpdateBranchDetails?` +
