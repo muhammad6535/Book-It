@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import apiPath from "../../apiPath";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -37,11 +40,25 @@ const theme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState();
+  const [password, setPassword] = useState();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    navigate("/OrgManager");
+    try {
+      const response = await axios.get(
+        apiPath +
+          `/Users/UserNameValidation?userName=${userName}&password=${password}`
+      );
+      if (response.data.length == 0) {
+        alert("Error! User Not Found");
+      } else {
+        navigate("/OrgManager", { state: { orgId: response.data.orgId } });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleLinkClick = () => {
@@ -77,10 +94,13 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="User Name"
               name="email"
-              autoComplete="email"
+              autoComplete="User Name"
               autoFocus
+              onChange={(e) => {
+                setUserName(e.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -91,6 +111,9 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

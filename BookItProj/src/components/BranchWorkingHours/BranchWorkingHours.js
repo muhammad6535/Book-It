@@ -47,17 +47,19 @@ function BranchWorkingHours(props) {
           ? new moment("1900-01-01T" + breakTo).format("MM-D-YYYY HH:mm")
           : "";
 
-        
-        var breakParams = bf.length>0 && bt.length>0? `&breakFrom=${bf}` + `&breakTo=${bt}` :  `&breakFrom=1900-01-01 13:00:00.000` + `&breakTo=1900-01-01 13:00:00.000`;
+        var breakParams =
+          bf.length > 0 && bt.length > 0
+            ? `&breakFrom=${bf}` + `&breakTo=${bt}`
+            : `&breakFrom=1900-01-01 13:00:00.000` +
+              `&breakTo=1900-01-01 13:00:00.000`;
         var url =
           `${apiPath}/WorkHours/UpdateWorkHours?` +
           `BranchId=${props.id}` +
           `&dayWeek=${dayNum}` +
           `&workFrom=${wf}` +
           `&workTo=${wt}` +
-          `&isDayOff=${isDayOff}` + breakParams;
-         
-        console.log(url);
+          `&isDayOff=${isDayOff}` +
+          breakParams;
         try {
           const response = await axios.put(url);
           console.log(response);
@@ -72,7 +74,6 @@ function BranchWorkingHours(props) {
 
   return (
     <Form>
-      {/* {JSON.stringify(dataToUpdate)} */}
       {workHours &&
         workHours.map((wh, index) => {
           return (

@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 const drawerWidth = 240;
-const navItems = ["Home", "About", "Contact"];
+const navItems = ["Add Branch"];
 
 export default function NavBar(props) {
   const { window } = props;
@@ -67,7 +67,7 @@ export default function NavBar(props) {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
+              <Button key={item} sx={{ color: "#fff" }} onClick={() => {props.setShow("infoModal")}}>
                 {item}
               </Button>
             ))}

@@ -17,11 +17,21 @@ function BranchDetails(props) {
     name: "Service Type",
     id: "",
   });
-  const [name, setName] = useState(props.data.data.name);
-  const [email, setEmail] = useState(props.data.data.email);
-  const [phone, setPhone] = useState(props.data.data.phone);
-  const [address, setAddress] = useState(props.data.data.address);
-  const [branchId, setBranchId] = useState(props.data.data.id);
+  const [name, setName] = useState(
+    props.data && props.data.data && props.data.data.name
+  );
+  const [email, setEmail] = useState(
+    props.data && props.data.data && props.data.data.email
+  );
+  const [phone, setPhone] = useState(
+    props.data && props.data.data && props.data.data.phone
+  );
+  const [address, setAddress] = useState(
+    props.data && props.data.data && props.data.data.address
+  );
+  const [branchId, setBranchId] = useState(
+    props.data && props.data.data && props.data.data.id
+  );
 
   useEffect(() => {
     getServices();

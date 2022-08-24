@@ -10,7 +10,7 @@ function Branch(props) {
   // const [branch, setBranch] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow("");
-  const handleSaveChanges = ()=>{
+  const handleSaveChanges = () => {
     handleClose();
   };
 
@@ -44,14 +44,18 @@ function Branch(props) {
           </Button>
         </div>
         <Modal className="BranchModal" show={show} onHide={handleClose}>
-          
-          
           <Modal.Header closeButton>
             <Modal.Title>Branch Details</Modal.Title>
           </Modal.Header>
           <Modal.Body className="modalBody">
             {show == "infoModal" ? (
-              <BranchDetails data={props} branchId={props.data.id} saveCloseModal ={handleSaveChanges} closeModal={handleClose}  className="infoModal" />
+              <BranchDetails
+                data={props}
+                branchId={props.data.id}
+                saveCloseModal={handleSaveChanges}
+                closeModal={handleClose}
+                className="infoModal"
+              />
             ) : null}
 
             {show == "workHoursModal" ? (
@@ -61,7 +65,6 @@ function Branch(props) {
               />
             ) : null}
           </Modal.Body>
-          
         </Modal>
       </Card.Body>
     </Card>
