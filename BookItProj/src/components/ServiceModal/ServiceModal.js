@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component ,useEffect,useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import "./ServiceModal.css";
 
@@ -13,7 +13,7 @@ export default class ServiceModal extends Component {
       edit_timeAvg: "",
     };
   }
-
+    
   onChangeTask = (e) => {
     this.setState({
       task: e.target.value,
@@ -131,6 +131,7 @@ export default class ServiceModal extends Component {
             onChange={this.onChangeTimeAvg}
             placeholder="Add Service TimeAvg"
             required
+            type="number"
           />
           <Button
             className="button_style"

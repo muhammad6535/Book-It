@@ -13,7 +13,7 @@ namespace BookIt.models
 
         public DbSet<Organization> Organization { get; set; }
         public DbSet<Branch> Branch { get; set; }
-        public DbSet<WorkHours> WorkHours { get; set; } 
+        public DbSet<WorkHours> WorkHours { get; set; }
         public DbSet<Appointment> Appointment { get; set; }
         public DbSet<ServiceType> ServiceType { get; set; }
         public DbSet<Users> Users { get; set; }

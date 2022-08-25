@@ -1,60 +1,61 @@
 import React, { Component, useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
-import "./BranchWorkingHours.css";
+import Form from "react-bootstrap/Form";
+
+import "./NewBranchWorkingHours.css";
 
 function TimeInputs(props) {
-  const [checked, setChecked] = useState(props.data.o.isDayOff);
-  const [workFrom, setWrokFrom] = useState(props.data.workFrom);
-  const [workTo, setWrokTo] = useState(props.data.workTo);
-  const [breakFrom, setBreakFrom] = useState(props.data.breakFrom);
-  const [breakTo, setBreakTo] = useState(props.data.breakTo);
-  const [isDayOff, setIsDayOff] = useState(props.data.o.isDayOff);
-  const [branchId, setBranchId] = useState(props.branchId);
-  const [dayNum, setDayNum] = useState(props.dayNum);
+  const [checked, setChecked] = useState(false);
+  const [workFrom, setWrokFrom] = useState();
+  const [workTo, setWrokTo] = useState();
+  const [breakFrom, setBreakFrom] = useState();
+  const [breakTo, setBreakTo] = useState();
+  const [isDayOff, setIsDayOff] = useState(false);
+  const [branchId, setBranchId] = useState();
+  const [dayNum, setDayNum] = useState(props.dayNum + 1);
   const [newData, setNewData] = useState({});
+  const [object, setObject] = useState();
 
-  const handleClick = (props) => {
-    setChecked(!checked);
-    setIsDayOff(!checked);
-  };
-// var aaa =  [];
   useEffect(() => {
-    setNewData({
-      id: dayNum,
+
+    let newObj = {
       workFrom: workFrom,
       workTo: workTo,
       breakFrom: breakFrom,
       breakTo: breakTo,
       isDayOff: isDayOff,
-      branchId: branchId,
-      dayNum: props.dayNum,
+      dayNum: dayNum,
+    };
+    // console.log(isDayOff)
+
+    let exists = props.workHours.find((obj) => {
+      return obj?.dayNum == dayNum;
     });
-  }, [workFrom, workTo, breakFrom, breakTo, isDayOff]);
-
-  useEffect(() => {
-    if(props.dataToUpdate.some(branch=>branch.dayNum ==props.dayNum)){
-      props.setDataToUpdate(props.dataToUpdate.map(newBranchData=>{
-        if(newBranchData.dayNum==newData.dayNum){
-          return newData
-        }else{
-          return newBranchData
-        }
-      }))
-
-    }else{
-      props.setDataToUpdate([...props.dataToUpdate,newData])
+    if (exists) {
+      props.setWorkHours(
+        props.workHours.map((obj) => {
+          if (obj?.dayNum == newObj?.dayNum) {
+            return newObj;
+          }
+          return obj;
+        })
+      );
+    } else {
+      props.setWorkHours([...props.workHours, newObj]);
     }
-  
-  }, [newData])
+  }, [workFrom, workTo, breakFrom, breakTo, dayNum, isDayOff]);
+
   
   return (
     <div className="timeInputs">
-      
       <label>{props.title}: </label>
       <label className="checkBox">
-        <input 
+        <input
           type="checkbox"
-          onClick={handleClick}
+          onClick={() => {
+            setChecked(!checked);
+            setIsDayOff(!isDayOff);
+          }}
           defaultChecked={isDayOff}
         />{" "}
         Is Day Off

@@ -20,50 +20,8 @@ function BranchDetails(props) {
   const [address, setAddress] = useState("");
   const [branchId, setBranchId] = useState("");
 
-  useEffect(() => {
-    getServices();
-  }, []);
-
-  async function getServices() {
-    let services = await (
-      await axios.get(
-        apiPath + `/ServiceType/ServiceTypes?branchId=${branchId}`
-      )
-    )?.data;
-    setServices(services);
-  }
-
   const handleSubmit = async (e) => {
-    // console.log(name);
-    // console.log(email);
-    // console.log(address);
-    // console.log(phone);
-
-    // try {
-    //   var selectedServiceParams = "";
-    //   if (selectedService.id.length > 0) {
-    //     selectedServiceParams = selectedService?.id
-    //       ? `&serviceId=${selectedService?.id || ""}`
-    //       : "" + selectedService?.timeAvg
-    //       ? `&timeAvg=${selectedService?.timeAvg || ""}`
-    //       : "" + selectedService?.name
-    //       ? `&serviceName=${selectedService?.name || ""}`
-    //       : "";
-    //   }
-    //   const response = axios.put(
-    //     `${apiPath}/Branch/UpdateBranchDetails?` +
-    //       `name=${name}` +
-    //       `&email=${email}` +
-    //       `&phone=${phone}` +
-    //       `&branchId=${props.branchId}` +
-    //       selectedServiceParams +
-    //       `&address=${address}`
-    //   );
-    //   alert("Details has been updated successfully");
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    
     props.saveCloseModal();
   };
   return (
@@ -125,71 +83,14 @@ function BranchDetails(props) {
           setPhone(e.target.value);
         }}
       />
-      {/* <FormControl fullWidth style={{ marginTop: "10px" }}>
-        <InputLabel id="serviceType">Service Type</InputLabel>
-        <Select
-          className="serviceType"
-          labelId="serviceType"
-          id="serviceType"
-          value={selectedService.id}
-          label="Service Type"
-          name="serviceType"
-          autoComplete="serviceType"
-        >
-          {services.map((service) => (
-            <MenuItem
-              key={service.id}
-              onClick={() =>
-                setSelectedService({
-                  branchId: service.branchId,
-                  id: service.id,
-                  name: service.name,
-                  timeAvg: service.timeAvg,
-                })
-              }
-              value={service.id}
-            >
-              {service.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        id="serviceName"
-        label="Service Name"
-        name="ServiceName"
-        autoComplete="Service Name"
-        onChange={(e) =>
-          setSelectedService({ ...selectedService, name: e.target.value })
-        }
-        value={selectedService.name}
-      />
-      {selectedService?.timeAvg ? (
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="serviceTimeAvg"
-          label="service TimeAvg"
-          name="serviceTimeAvg"
-          autoComplete="Service TimeAvg"
-          onChange={(e) =>
-            setSelectedService({ ...selectedService, timeAvg: e.target.value })
-          }
-          value={selectedService?.timeAvg}
-        />
-      ) : null} */}
-      
-      <ServiceModal className="serviceModal"/>
+
+      <ServiceModal className="serviceModal" services={services} setServices={setServices} />
       <Modal.Footer>
         <Button variant="secondary" onClick={props.closeModal}>
           Close
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
-          Save Changes
+          Next
         </Button>
       </Modal.Footer>
     </Form>

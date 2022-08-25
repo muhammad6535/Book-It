@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import "./NewBranchModal.css";
 import NewBranchDetails from "../NewBranchDetails/NewBranchDetails";
-import NewBranchWorkingHours from "../NewBranchWorkingHours/BranchWorkingHours";
+import NewBranchWorkingHours from "../NewBranchWorkingHours/NewBranchWorkingHours";
 // import ServiceModal from "../ServiceModal/ServiceModal";
 
 
 function BranchModal(props) {
-  // const [show, setShow] = useState(false);
   const handleClose = () => props.setShow("");
   const handleSaveChanges = () => {
     handleClose();
+    props.setShow("workHoursModal")
   };
 
   return (
@@ -32,7 +32,7 @@ function BranchModal(props) {
 
         {props.show == "workHoursModal" ? (
           <NewBranchWorkingHours
-            id={props.data.id}
+            // id={props.data.id}
             className="workHoursModal"
           />
         ) : null}
