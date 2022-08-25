@@ -8,7 +8,7 @@ import useFetch from "../../useFetch";
 import apiPath from "../../apiPath";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import BranchModal from "../NewBranchModal/BranchModal";
+import NewBranchModal from "../NewBranchModal/NewBranchModal";
 import {useLocation} from 'react-router-dom';
 
 
@@ -27,7 +27,7 @@ function OrgManager(props) {
         {branches &&
           branches.map((branch) => <Branch key={branch.id} data={branch} />)}
       </div>
-      <BranchModal show={show} setShow={setShow}/>
+      <NewBranchModal show={show} setShow={setShow}/>
       <Footer />
     </div>
   );

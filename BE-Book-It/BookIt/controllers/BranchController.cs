@@ -24,7 +24,6 @@ namespace BookIt.controllers
             return Ok(_context.Branch.Include(o => o.Organization).Where(o => o.OrgId == orgId));
         }
 
-
         [HttpPut("UpdateBranchDetails")]
         public IActionResult UpdateBranchDetails(string branchId, string name, string email, string phone, string address,
             int? serviceId, int timeAvg, string serviceName)
@@ -44,7 +43,7 @@ namespace BookIt.controllers
                 {
                     ServiceType serviceType = _context.ServiceType.FirstOrDefault(o => o.Id == serviceId.Value);
                     serviceType.TimeAvg = timeAvg;
-                    serviceType.Name = serviceName;
+                    serviceType.Name = serviceName.Trim();
                 }
                 _context.SaveChanges();
                 return Ok();
@@ -57,4 +56,3 @@ namespace BookIt.controllers
     }
 
 }
-

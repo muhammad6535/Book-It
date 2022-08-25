@@ -17,6 +17,5 @@ namespace BookIt.models
         public DbSet<Appointment> Appointment { get; set; }
         public DbSet<ServiceType> ServiceType { get; set; }
         public DbSet<Users> Users { get; set; }
-
     }
 }

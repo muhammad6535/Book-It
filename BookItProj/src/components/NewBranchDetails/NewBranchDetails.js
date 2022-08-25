@@ -1,15 +1,12 @@
 import React, { Component, useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Form from "react-bootstrap/Form";
-import "./BranchDetails.css";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import "./NewBranchDetails.css";
 import axios from "axios";
 import apiPath from "../../apiPath";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import ServiceModal from "../ServiceModal/ServiceModal";
 
 function BranchDetails(props) {
   const [services, setServices] = useState([]);
@@ -17,21 +14,11 @@ function BranchDetails(props) {
     name: "Service Type",
     id: "",
   });
-  const [name, setName] = useState(
-    props.data && props.data.data && props.data.data.name
-  );
-  const [email, setEmail] = useState(
-    props.data && props.data.data && props.data.data.email
-  );
-  const [phone, setPhone] = useState(
-    props.data && props.data.data && props.data.data.phone
-  );
-  const [address, setAddress] = useState(
-    props.data && props.data.data && props.data.data.address
-  );
-  const [branchId, setBranchId] = useState(
-    props.data && props.data.data && props.data.data.id
-  );
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [branchId, setBranchId] = useState("");
 
   useEffect(() => {
     getServices();
@@ -47,36 +34,42 @@ function BranchDetails(props) {
   }
 
   const handleSubmit = async (e) => {
-    try {
-      var selectedServiceParams = "";
-      if (selectedService.id.length > 0) {
-        selectedServiceParams = selectedService?.id
-          ? `&serviceId=${selectedService?.id || ""}`
-          : "" + selectedService?.timeAvg
-          ? `&timeAvg=${selectedService?.timeAvg || ""}`
-          : "" + selectedService?.name
-          ? `&serviceName=${selectedService?.name || ""}`
-          : "";
-      }
-      const response = axios.put(
-        `${apiPath}/Branch/UpdateBranchDetails?` +
-          `name=${name}` +
-          `&email=${email}` +
-          `&phone=${phone}` +
-          `&branchId=${props.branchId}` +
-          selectedServiceParams +
-          `&address=${address}`
-      );
-      alert("Details has been updated successfully");
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    // console.log(name);
+    // console.log(email);
+    // console.log(address);
+    // console.log(phone);
+
+    // try {
+    //   var selectedServiceParams = "";
+    //   if (selectedService.id.length > 0) {
+    //     selectedServiceParams = selectedService?.id
+    //       ? `&serviceId=${selectedService?.id || ""}`
+    //       : "" + selectedService?.timeAvg
+    //       ? `&timeAvg=${selectedService?.timeAvg || ""}`
+    //       : "" + selectedService?.name
+    //       ? `&serviceName=${selectedService?.name || ""}`
+    //       : "";
+    //   }
+    //   const response = axios.put(
+    //     `${apiPath}/Branch/UpdateBranchDetails?` +
+    //       `name=${name}` +
+    //       `&email=${email}` +
+    //       `&phone=${phone}` +
+    //       `&branchId=${props.branchId}` +
+    //       selectedServiceParams +
+    //       `&address=${address}`
+    //   );
+    //   alert("Details has been updated successfully");
+    //   console.log(response);
+    // } catch (error) {
+    //   console.log(error);
+    // }
     props.saveCloseModal();
   };
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="containerr">
       <TextField
+        className="textInput"
         margin="normal"
         required
         fullWidth
@@ -85,11 +78,13 @@ function BranchDetails(props) {
         id="name"
         autoComplete="current-password"
         defaultValue={name}
+        autoFocus
         onChange={(e) => {
           setName(e.target.value);
         }}
       />
       <TextField
+        className="textInput"
         margin="normal"
         required
         fullWidth
@@ -97,13 +92,13 @@ function BranchDetails(props) {
         label="Email Address"
         name="email"
         autoComplete="email"
-        autoFocus
         defaultValue={email}
         onChange={(e) => {
           setEmail(e.target.value);
         }}
       />
       <TextField
+        className="textInput"
         margin="normal"
         required
         fullWidth
@@ -111,13 +106,13 @@ function BranchDetails(props) {
         label="Address"
         name="address"
         autoComplete="address"
-        autoFocus
         defaultValue={address}
         onChange={(e) => {
           setAddress(e.target.value);
         }}
       />
       <TextField
+        className="textInput"
         margin="normal"
         required
         fullWidth
@@ -125,13 +120,12 @@ function BranchDetails(props) {
         label="Phone"
         name="Phone"
         autoComplete="Phone"
-        autoFocus
         defaultValue={phone}
         onChange={(e) => {
           setPhone(e.target.value);
         }}
       />
-      <FormControl fullWidth style={{ marginTop: "10px" }}>
+      {/* <FormControl fullWidth style={{ marginTop: "10px" }}>
         <InputLabel id="serviceType">Service Type</InputLabel>
         <Select
           className="serviceType"
@@ -187,8 +181,9 @@ function BranchDetails(props) {
           }
           value={selectedService?.timeAvg}
         />
-      ) : null}
-
+      ) : null} */}
+      
+      <ServiceModal className="serviceModal"/>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.closeModal}>
           Close
