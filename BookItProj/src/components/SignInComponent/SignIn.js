@@ -59,12 +59,11 @@ export default function SignIn() {
         if (response.data.length == 0) {
           alert("Error! User Not Found");
         } else {
-        navigate("/SupportRep", { state: { branchId: response.data[0].id } });
-        console.log(response.data);
+          navigate("/SupportRep", { state: { branchId: response.data[0].id } });
+          console.log(response.data);
         }
       } else {
         navigate("/OrgManager", { state: { orgId: response.data.orgId } });
-
       }
     } catch (error) {
       console.log(error);

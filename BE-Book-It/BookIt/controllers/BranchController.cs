@@ -93,6 +93,18 @@ namespace BookIt.controllers
             return Ok(_context.Branch.Include(o => o.Organization).Where(o => o.Email == email && o.Password == password));
         }
 
+        [HttpDelete("RemoveBranch")]
+        public IActionResult RemoveBranch(int branchId)
+        {
+            var branch = _context.Branch.FirstOrDefault(o => o.Id == branchId);
+            if (branch == null) { 
+                return BadRequest("branch does not exist");
+            }
+           _context.Branch.Remove(branch);
+            _context.SaveChanges();
+            return Ok("branch removed successfully");
+        }
+
         //help methods
         private void InsertServices(int branchId, List<ServiceType> services)
         {

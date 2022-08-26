@@ -6,6 +6,8 @@ import "./Branch.css";
 import BranchDetails from "../BranchDetails/BranchDetails";
 import BranchWorkingHours from "../BranchWorkingHours/BranchWorkingHours";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import axios from "axios";
+import apiPath from "../../apiPath";
 
 function Branch(props) {
   const [branchId, setBranchId] = useState(props.data.id);
@@ -15,8 +17,15 @@ function Branch(props) {
     handleClose();
   };
 
-  const removeBranch = () => {
-    alert(branchId);
+  const removeBranch = async () => {
+    try {
+      let url = apiPath + "/Branch/RemoveBranch?branchId=" + branchId;
+      const response = await axios.delete(url);
+      props.updateBranches();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
