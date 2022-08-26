@@ -19,16 +19,70 @@ let days = [
   "Saturday",
 ];
 
-function BranchWorkingHours(props) {
+function NewBranchWorkingHours(props) {
   const [dataToUpdate, setDataToUpdate] = useState([]);
   const [workHours, setWorkHours] = useState([]);
-  // let { data: workHours } = useFetch(
-  //   apiPath + `/WorkHours/WorkHours?branchId=` + props.id
-  // );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     console.log(workHours);
 
+    //check if all inputs are filled
+    if (workHours.length == 7) {
+      alert("here");
+      workHours.forEach(async (wh, index) => {
+        if (!!wh.dayNum) {
+          let workFrom = wh.workFrom;
+          let workTo = wh.workTo;
+          let breakFrom = wh.breakFrom;
+          let breakTo = wh.breakTo;
+          let dayNum = wh.dayNum;
+          let isDayOff = wh.isDayOff;
+          var wf = workFrom
+            ? new moment("1900-01-01T" + workFrom).format("MM-D-YYYY HH:mm")
+            : "";
+          var wt = workTo
+            ? new moment("1900-01-01T" + workTo).format("MM-D-YYYY HH:mm")
+            : "";
+          var bf = breakFrom
+            ? new moment("1900-01-01T" + breakFrom).format("MM-D-YYYY HH:mm")
+            : "";
+          var bt = breakTo
+            ? new moment("1900-01-01T" + breakTo).format("MM-D-YYYY HH:mm")
+            : "";
+
+          var breakParams =
+            bf.length > 0 && bt.length > 0
+              ? `&breakFrom=${bf}` + `&breakTo=${bt}`
+              : `&breakFrom=1900-01-01 13:00:00.000` +
+                `&breakTo=1900-01-01 13:00:00.000`;
+
+          var workParams =
+            bf.length > 0 && bt.length > 0
+              ? `&workFrom=${wf}` + `&workTo=${wt}`
+              : `&workFrom=1900-01-01 13:00:00.000` +
+                `&workTo=1900-01-01 13:00:00.000`;
+          var url =
+            `${apiPath}/WorkHours/AddWorkHours?` +
+            `BranchId=${props.branchId}` +
+            `&dayWeek=${dayNum}` +
+            workParams +
+            `&isDayOff=${isDayOff}` +
+            `&dayWeek=${dayNum}` +
+            breakParams;
+          console.log(url);
+          try {
+            const response = await axios.post(url);
+            console.log(response);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
+      //insert workHours
+    } else {
+      alert("Please fill all the workHours for the whole week");
+    }
+    //insert work hours
     // props.saveCloseModal();
   };
 
@@ -60,4 +114,4 @@ function BranchWorkingHours(props) {
     </Form>
   );
 }
-export default BranchWorkingHours;
+export default NewBranchWorkingHours;

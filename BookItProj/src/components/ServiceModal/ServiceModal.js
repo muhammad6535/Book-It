@@ -1,51 +1,47 @@
-import React, { Component ,useEffect,useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import "./ServiceModal.css";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
-export default class ServiceModal extends Component {
-  constructor() {
-    super();
-    this.state = {
-      todo_array: [],
-      task: "",
-      timeAvg: "",
-      edit_task: "",
-      edit_timeAvg: "",
-    };
-  }
-    
-  onChangeTask = (e) => {
-    this.setState({
-      task: e.target.value,
-    });
+function ServiceModal(props) {
+  // super();
+  const [state, setState] = useState({
+    todo_array: [],
+    task: "",
+    timeAvg: "",
+    edit_task: "",
+    edit_timeAvg: "",
+  });
+
+  useEffect(() => {
+    props.setServices(state.todo_array);
+  }, [state]);
+
+  const onChangeTask = (e) => {
+    setState({ ...state, task: e.target.value });
   };
 
-  onChangeTimeAvg = (e) => {
-    this.setState({
-      timeAvg: e.target.value,
-    });
+  const onChangeTimeAvg = (e) => {
+    setState({ ...state, timeAvg: e.target.value });
   };
 
-  addTask = () => {
-    let { todo_array, task } = this.state;
+  const addTask = () => {
+    let { todo_array, task } = state;
+
     let obj = {
-      id: todo_array.length == 0 ? 1 : todo_array[todo_array.length - 1].id + 1,
+      id:
+        todo_array?.length == 0 ? 1 : todo_array[todo_array?.length - 1].id + 1,
       name: task,
-      timeAvg: this.state.timeAvg,
+      timeAvg: state.timeAvg,
       is_editing: false,
       is_done: false,
     };
     todo_array.push(obj);
-    this.setState({
-      todo_array: todo_array,
-      task: "",
-      timeAvg: "",
-    });
+    setState({ ...state, todo_array: todo_array, task: "", timeAvg: "" });
   };
 
-  edit = (object) => {
-    let { todo_array } = this.state;
-
+  const edit = (object) => {
+    let { todo_array } = state;
     let i = todo_array.findIndex((task) => task.id === object.id);
     todo_array[i].is_editing = !todo_array[i].is_editing;
 
@@ -56,199 +52,191 @@ export default class ServiceModal extends Component {
       return task;
     });
 
-    this.setState({
+    setState({
+      ...state,
       todo_array: todo_array,
       edit_task: object.name,
       edit_timeAvg: object.timeAvg,
     });
   };
 
-  editTask = (task) => {
-    this.setState({
-      edit_task: task,
-    });
+  const editTask = (task) => {
+    setState({ ...state, edit_task: task });
   };
 
-  editTimeAvg = (timeAvg) => {
-    this.setState({
-      edit_timeAvg: timeAvg,
-    });
+  const editTimeAvg = (timeAvg) => {
+    setState({ ...state, edit_timeAvg: timeAvg });
   };
 
-  saveEditTask = (object) => {
-    let { todo_array, edit_task, edit_timeAvg } = this.state;
+  const saveEditTask = (object) => {
+    let { todo_array, edit_task, edit_timeAvg } = state;
     let i = todo_array.findIndex((task) => task.id === object.id);
     todo_array[i].name = edit_task;
     todo_array[i].timeAvg = edit_timeAvg;
-
-    this.setState(
-      {
-        todo_array: todo_array,
-        edit_task: "",
-        edit_timeAvg: "",
-      },
-      (e) => {
-        this.edit(object);
-      }
-    );
-  };
-
-  delete = (object) => {
-    let { todo_array } = this.state;
-    let i = todo_array.findIndex((task) => task.id === object.id);
-    todo_array.splice(i, 1);
-    this.setState({
+    todo_array[i].is_editing = !todo_array[i].is_editing;
+    setState({
+      ...state,
       todo_array: todo_array,
+      edit_task: "",
+      edit_timeAvg: "",
     });
   };
 
-  done = (object) => {
-    let { todo_array } = this.state;
+  const remove = (object) => {
+    let { todo_array } = state;
+    let i = todo_array.findIndex((task) => task.id === object.id);
+    todo_array.splice(i, 1);
+    setState({ ...state, todo_array: todo_array });
+  };
+
+  const done = (object) => {
+    let { todo_array } = state;
     let i = todo_array.findIndex((task) => task.id === object.id);
     todo_array[i].is_done = true;
 
-    this.setState({
-      todo_array: todo_array,
-    });
+    setState({ ...state, todo_array: todo_array });
   };
 
-  render() {
-    return (
-      <div className="Container">
-        <div>
-          <TextField
-            id="standard-basic"
-            autoComplete="off"
-            value={this.state.task}
-            onChange={this.onChangeTask}
-            placeholder="Add Service Name"
-            required
-          />
-          <TextField
-            id="standard-basic"
-            autoComplete="off"
-            value={this.state.timeAvg}
-            onChange={this.onChangeTimeAvg}
-            placeholder="Add Service TimeAvg"
-            required
-            type="number"
-          />
-          <Button
-            className="button_style"
-            variant="contained"
-            color="primary"
-            size="small"
-            disabled={this.state.task == "" || this.state.timeAvg == ""}
-            onClick={this.addTask}
-          >
-            Add
-          </Button>
-        </div>
+  return (
+    <div className="Container">
+      <div>
+        <TextField
+          id="standard-basic"
+          className="customInputCss"
+          autoComplete="off"
+          value={state.task}
+          onChange={onChangeTask}
+          placeholder="Add Service Name"
+          required
+        />
+        <TextField
+          id="standard-basic"
+          autoComplete="off"
+          className="customInputCss"
+          value={state.timeAvg}
+          onChange={onChangeTimeAvg}
+          placeholder="Add Service TimeAvg"
+          required
+          type="number"
+        />
+        <Button
+          className="button_style"
+          variant="contained"
+          color="primary"
+          size="small"
+          disabled={state.task == "" || state.timeAvg == ""}
+          onClick={addTask}
+        >
+          Add Service
+        </Button>
+      </div>
 
-        {this.state.todo_array.length > 0 ? (
-          <div>
-            <table className="centerTable" style={{ marginTop: 20 }}>
-              <thead>
-                <tr>
-                  <th>Services</th>
-                  {/* <th>Action</th> */}
-                </tr>
-              </thead>
-              {this.state.todo_array.map((object, i) => {
-                return (
-                  <tbody>
-                    <tr>
-                      <td>
-                        {object.is_editing ? (
-                          <div>
-                            <TextField
-                              id="standard-basic"
-                              value={this.state.edit_task}
-                              onChange={(e) => this.editTask(e.target.value)}
-                              required
-                            />
-                            <TextField
-                              id="standard-basic"
-                              value={this.state.edit_timeAvg}
-                              onChange={(e) => this.editTimeAvg(e.target.value)}
-                              required
-                            />
-                          </div>
-                        ) : object.is_done ? (
-                          <s>
-                            {object.timeA}: {object.timeAvg}
-                          </s>
-                        ) : (
-                          <span>
-                            {object.name}: {object.timeAvg}
-                          </span>
-                        )}
-                      </td>
-                      <td>
-                        {object.is_editing ? (
-                          <div>
-                            <Button
-                              className="button_style"
-                              variant="outlined"
-                              color="primary"
-                              size="small"
-                              disabled={this.state.edit_task == ""}
-                              onClick={(e) => this.saveEditTask(object)}
-                            >
-                              Save
-                            </Button>
-                            <Button
-                              className="button_style"
-                              variant="outlined"
-                              color=""
-                              size="small"
-                              onClick={(e) => this.edit(object)}
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                        ) : (
-                          <div>
-                            <Button
-                              className="button_style"
-                              variant="outlined"
-                              color="primary"
-                              size="small"
-                              onClick={(e) => this.edit(object)}
-                            >
-                              Edit
-                            </Button>
-                            {/* <Button
+      {state.todo_array?.length > 0 ? (
+        <div>
+          <table className="centerTable" style={{ marginTop: 20 }}>
+            <thead>
+              <tr>
+                <th>Services</th>
+                {/* <th>Action</th> */}
+              </tr>
+            </thead>
+            {state.todo_array.map((object, i) => {
+              return (
+                <tbody>
+                  <tr>
+                    <td>
+                      {object.is_editing ? (
+                        <div>
+                          <TextField
+                            id="standard-basic"
+                            value={state.edit_task}
+                            onChange={(e) => editTask(e.target.value)}
+                            required
+                          />
+                          <TextField
+                            id="standard-basic"
+                            value={state.edit_timeAvg}
+                            onChange={(e) => editTimeAvg(e.target.value)}
+                            required
+                          />
+                        </div>
+                      ) : object.is_done ? (
+                        <s>
+                          {object.timeA}: {object.timeAvg}
+                        </s>
+                      ) : (
+                        <span>
+                          {object.name}: {object.timeAvg}
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      {object.is_editing ? (
+                        <div>
+                          <Button
+                            className="button_style"
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            disabled={state.edit_task == ""}
+                            onClick={(e) => saveEditTask(object)}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            className="button_style"
+                            variant="outlined"
+                            color=""
+                            size="small"
+                            onClick={(e) => edit(object)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      ) : (
+                        <div>
+                          <Button
+                            className="button_style"
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={(e) => edit(object)}
+                          >
+                            Edit
+                          </Button>
+                          {/* <Button
                               className="button_style"
                               variant="outlined"
                               color="secondary"
                               size="small"
                               disabled={object.is_done}
-                              onClick={(e) => this.done(object)}
+                              onClick={(e) => done(object)}
                             >
                               Done
                             </Button> */}
-                            <Button
-                              className="button_style"
-                              variant="outlined"
-                              size="small"
-                              onClick={(e) => this.delete(object)}
-                            >
-                              Delete
-                            </Button>
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                );
-              })}
-            </table>
-          </div>
-        ) : (
-          <h5>Empty List!</h5>
-        )}
-      </div>
-    );
-  }
+                          <Button
+                            className="button_style"
+                            variant="outlined"
+                            size="small"
+                            onClick={(e) => remove(object)}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              );
+            })}
+          </table>
+        </div>
+      ) : (
+        // <h5>Empty List!</h5>
+        null
+      )}
+    </div>
+  );
 }
+
+export default ServiceModal;

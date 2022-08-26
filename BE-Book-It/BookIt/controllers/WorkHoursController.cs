@@ -68,5 +68,31 @@ namespace BookIt.controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("AddWorkHours")]
+        public IActionResult AddWorkHours(int branchId, string dayWeek, DateTime workFrom, DateTime workTo,
+            DateTime breakFrom, DateTime breakTo, bool isDayOff)
+        {
+            try
+            {
+                WorkHours workHours = new WorkHours();
+                //if (workHours == null)
+                //    return BadRequest("Work Hours Not Found");
+                workHours.BranchId= branchId;
+                workHours.WorkFrom = workFrom;
+                workHours.WorkTo = workTo;
+                workHours.BreakFrom = breakTo.Subtract(breakFrom).TotalMinutes != 0 ? breakFrom : null;
+                workHours.BreakTo = breakTo.Subtract(breakFrom).TotalMinutes != 0 ? breakTo : null;
+                workHours.IsDayOff = isDayOff;
+                workHours.Day = dayWeek;
+                _context.WorkHours.Add(workHours);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -26,8 +26,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="#">
+        BookIt
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -52,9 +52,19 @@ export default function SignIn() {
           `/Users/UserNameValidation?userName=${userName}&password=${password}`
       );
       if (response.data.length == 0) {
-        alert("Error! User Not Found");
+        const response = await axios.get(
+          apiPath +
+            `/Branch/BranchUserValidation?email=${userName}&password=${password}`
+        );
+        if (response.data.length == 0) {
+          alert("Error! User Not Found");
+        } else {
+        navigate("/SupportRep", { state: { branchId: response.data[0].id } });
+        console.log(response.data);
+        }
       } else {
         navigate("/OrgManager", { state: { orgId: response.data.orgId } });
+
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +72,7 @@ export default function SignIn() {
   };
 
   const handleLinkClick = () => {
-    navigate("/SupportRep");
+    // navigate("/SupportRep");
   };
 
   return (

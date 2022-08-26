@@ -32,6 +32,9 @@ function BranchDetails(props) {
   const [branchId, setBranchId] = useState(
     props.data && props.data.data && props.data.data.id
   );
+  const [password, setPassword] = useState(
+    props.data && props.data.data && props.data.data.password
+  );
 
   useEffect(() => {
     getServices();
@@ -63,7 +66,8 @@ function BranchDetails(props) {
           `&phone=${phone}` +
           `&branchId=${props.branchId}` +
           selectedServiceParams +
-          `&address=${address}`
+          `&address=${address}` +
+          `&password=${password}`
       );
       alert("Details has been updated successfully");
       console.log(response);
@@ -101,6 +105,22 @@ function BranchDetails(props) {
           setEmail(e.target.value);
         }}
       />
+
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="password"
+        label="Password"
+        name="password"
+        autoComplete="password"
+        autoFocus
+        defaultValue={password}
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+      />
+
       <TextField
         margin="normal"
         required

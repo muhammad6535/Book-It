@@ -10,8 +10,8 @@ body {
 }
 
 .button_style {
-  margin-left: 10px !important;
   margin-right: 10px;
+  margin-top: 10px !important;
 }
 
 /* .centerTable {
@@ -21,3 +21,13 @@ body {
 h5 {
   color: #3f51b5;
 }
+
+.customInputCss {
+  display: grid;
+  width: 50% !important;
+  margin :10px;
+}
+
+/* #standard-basic{
+  width: 45%;
+} */

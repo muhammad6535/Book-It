@@ -26,7 +26,7 @@ function OrgManager(props) {
         {branches &&
           branches.map((branch) => <Branch key={branch.id} data={branch} />)}
       </div>
-      <NewBranchModal show={show} setShow={setShow} />
+      <NewBranchModal show={show} orgId={location.state.orgId} setShow={setShow} />
 
       <Footer />
     </div>

@@ -20,14 +20,14 @@ namespace BookIt.controllers
         }
 
         [HttpGet("Branches")]
-        public IActionResult GetOrganization(int orgId)
+        public IActionResult GetBranches(int orgId)
         {
             return Ok(_context.Branch.Include(o => o.Organization).Where(o => o.OrgId == orgId));
         }
 
         [HttpPut("UpdateBranchDetails")]
         public IActionResult UpdateBranchDetails(string branchId, string name, string email, string phone, string address,
-            int? serviceId, int timeAvg, string serviceName)
+            int? serviceId, int timeAvg, string serviceName, string password)
         {
             try
             {
@@ -40,6 +40,7 @@ namespace BookIt.controllers
                 branch.Email = email.Trim();
                 branch.Phone = phone.Trim();
                 branch.Address = address.Trim();
+                branch.Password = password.Trim();
                 if (serviceId.HasValue)
                 {
                     ServiceType serviceType = _context.ServiceType.FirstOrDefault(o => o.Id == serviceId.Value);
@@ -57,7 +58,9 @@ namespace BookIt.controllers
 
         [HttpPost("AddNewBranch")]
         public IActionResult AddNewBranch(int orgId, string name, string email, string phone, string address,
-           List<ServiceType> services, List<WorkHours> workHours)
+           List<ServiceType> services, string password
+            //List<WorkHours> workHours
+            )
         {
             try
             {
@@ -67,14 +70,16 @@ namespace BookIt.controllers
                     Email = email.Trim(),
                     Phone = phone.Trim(),
                     Address = address.Trim(),
-                    OrgId = orgId
+                    OrgId = orgId,
+                    Password = password
                 };
                 _context.Branch.Add(branch);
                 _context.SaveChanges();
-                InsertServices(branch.Id, services);
-                InsertWorkHours(branch.Id, workHours);
+                if (branch.Id > 0)
+                    InsertServices(branch.Id, services);
+                //InsertWorkHours(branch.Id, workHours);
                 _context.SaveChanges();
-                return Ok();
+                return Ok(branch);
             }
             catch (Exception ex)
             {
@@ -82,6 +87,11 @@ namespace BookIt.controllers
             }
         }
 
+        [HttpGet("BranchUserValidation")]
+        public IActionResult BranchUserValidation(string email,string password)
+        {
+            return Ok(_context.Branch.Include(o => o.Organization).Where(o => o.Email == email && o.Password == password));
+        }
 
         //help methods
         private void InsertServices(int branchId, List<ServiceType> services)
@@ -97,21 +107,21 @@ namespace BookIt.controllers
             }
         }
 
-        private void InsertWorkHours(int branchId, List<WorkHours> workHours)
-        {
-            foreach (WorkHours w in workHours)
-            {
-                WorkHours workHour = new();
-                workHour.BranchId = branchId;
-                workHour.WorkFrom = w.WorkFrom;
-                workHour.WorkTo = w.WorkTo;
-                workHour.BreakFrom = w.BreakFrom;
-                workHour.BreakTo = w.BreakTo;
-                workHour.IsDayOff = w.IsDayOff;
-                _context.WorkHours.Add(workHour);
-                _context.SaveChanges();
-            }
-        }
+        //private void InsertWorkHours(int branchId, List<WorkHours> workHours)
+        //{
+        //    foreach (WorkHours w in workHours)
+        //    {
+        //        WorkHours workHour = new();
+        //        workHour.BranchId = branchId;
+        //        workHour.WorkFrom = w.WorkFrom;
+        //        workHour.WorkTo = w.WorkTo;
+        //        workHour.BreakFrom = w.BreakFrom;
+        //        workHour.BreakTo = w.BreakTo;
+        //        workHour.IsDayOff = w.IsDayOff;
+        //        _context.WorkHours.Add(workHour);
+        //        _context.SaveChanges();
+        //    }
+        //}
     }
 
 }

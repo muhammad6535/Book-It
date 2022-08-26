@@ -5,20 +5,31 @@ import Modal from "react-bootstrap/Modal";
 import "./Branch.css";
 import BranchDetails from "../BranchDetails/BranchDetails";
 import BranchWorkingHours from "../BranchWorkingHours/BranchWorkingHours";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 function Branch(props) {
-  // const [branch, setBranch] = useState(false);
+  const [branchId, setBranchId] = useState(props.data.id);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow("");
   const handleSaveChanges = () => {
     handleClose();
   };
 
+  const removeBranch = () => {
+    alert(branchId);
+  };
+
   return (
     <Card style={{ width: "18rem" }}>
       {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+      <DeleteForeverIcon
+        onClick={removeBranch}
+        className="deleteIcon"
+        style={{ position: "relative", right: 0 }}
+      ></DeleteForeverIcon>
       <Card.Body>
         <Card.Title>{props.data.name} </Card.Title>
+
         <Card.Text>
           <label>Name: {props.data.name}</label>
           <br />

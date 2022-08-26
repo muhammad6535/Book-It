@@ -17,7 +17,6 @@ function TimeInputs(props) {
     setChecked(!checked);
     setIsDayOff(!checked);
   };
-// var aaa =  [];
   useEffect(() => {
     setNewData({
       id: dayNum,

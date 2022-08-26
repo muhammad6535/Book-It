@@ -5,10 +5,11 @@ import apiPath from "../../apiPath";
 import ActionItemForum from "./ActionItemForum";
 import ActionItemList from "./ActionItemList";
 
-const AppointementsList = () => {
+const AppointementsList = (props) => {
+  
   return (
     <div>
-      <ActionItemForum />
+      <ActionItemForum branchId = {props.branchId}/>
     </div>
   );
 };

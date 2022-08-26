@@ -13,6 +13,7 @@ function BranchModal(props) {
     handleClose();
     props.setShow("workHoursModal")
   };
+  const [branchId,setBranchId] = useState('');
 
   return (
     <Modal className="BranchModal" show={props.show} onHide={handleClose}>
@@ -23,10 +24,12 @@ function BranchModal(props) {
         {props.show == "infoModal" ? (
           <NewBranchDetails
             data={props}
+            orgId={props.orgId}
             branchId={props.data && props.data.id}
             saveCloseModal={handleSaveChanges}
             closeModal={handleClose}
             className="infoModal"
+            setBranchId={setBranchId}
           />
         ) : null}
 
@@ -34,6 +37,7 @@ function BranchModal(props) {
           <NewBranchWorkingHours
             // id={props.data.id}
             className="workHoursModal"
+            branchId={branchId}
           />
         ) : null}
       </Modal.Body>

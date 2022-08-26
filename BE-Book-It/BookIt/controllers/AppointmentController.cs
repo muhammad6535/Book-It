@@ -59,5 +59,23 @@ namespace BookIt.controllers
             }
             return Ok();
         }
+
+        [HttpDelete("RemoveAppointment")]
+        public IActionResult RemoveAppointment(int id)
+        {
+            try
+            {
+                var appointment = _context.Appointment.FirstOrDefault(o => o.Id == id);
+                if (appointment == null)
+                    return BadRequest("appointment not exist");
+                _context.Appointment.Remove(appointment);
+                _context.SaveChanges();
+                return Ok("appointment removed successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

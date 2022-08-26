@@ -7,31 +7,51 @@ import apiPath from "../../apiPath";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import ServiceModal from "../ServiceModal/ServiceModal";
+import FormControl from "@mui/material/FormControl";
 
-function BranchDetails(props) {
+function NewBranchDetails(props) {
   const [services, setServices] = useState([]);
-  const [selectedService, setSelectedService] = useState({
-    name: "Service Type",
-    id: "",
-  });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [branchId, setBranchId] = useState("");
+  const [password, setPassword] = useState("");
+
 
   const handleSubmit = async (e) => {
-    
-    props.saveCloseModal();
+    if (services && address && phone && name && email) {
+      try {
+        let url =
+          apiPath +
+          `/Branch/AddNewBranch?` +
+          `orgId=${props.orgId}` +
+          `&name=${name}` +
+          `&email=${email}` +
+          `&phone=${phone}` +
+          `&address=${address}`+
+          `&password=${password}`;
+        let response = await axios.post(url, services);
+        console.log(response);
+        props.setBranchId(response?.data?.id);
+        props.saveCloseModal();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("Please fill all fields");
+    }
   };
+
   return (
-    <Form onSubmit={handleSubmit} className="containerr">
+    <FormControl onSubmit={handleSubmit} className="containerr">
       <TextField
         className="textInput"
         margin="normal"
         required
         fullWidth
         name="name"
+        size="small"
         label="Name"
         id="name"
         autoComplete="current-password"
@@ -49,10 +69,28 @@ function BranchDetails(props) {
         id="email"
         label="Email Address"
         name="email"
+        size="small"
+
         autoComplete="email"
         defaultValue={email}
         onChange={(e) => {
           setEmail(e.target.value);
+        }}
+      />
+       <TextField
+        className="textInput"
+        margin="normal"
+        required
+        fullWidth
+        id="password"
+        size="small"
+
+        label="Password"
+        name="password"
+        autoComplete="password"
+        defaultValue={address}
+        onChange={(e) => {
+          setPassword(e.target.value);
         }}
       />
       <TextField
@@ -61,6 +99,8 @@ function BranchDetails(props) {
         required
         fullWidth
         id="address"
+        size="small"
+
         label="Address"
         name="address"
         autoComplete="address"
@@ -72,6 +112,7 @@ function BranchDetails(props) {
       <TextField
         className="textInput"
         margin="normal"
+        size="small"
         required
         fullWidth
         id="Phone"
@@ -84,17 +125,22 @@ function BranchDetails(props) {
         }}
       />
 
-      <ServiceModal className="serviceModal" services={services} setServices={setServices} />
       <Modal.Footer>
+        
+      <ServiceModal
+        className="serviceModal"
+        services={services}
+        setServices={setServices}
+      />
         <Button variant="secondary" onClick={props.closeModal}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
+        <Button variant="primary" onClick={handleSubmit} branchId={branchId}>
           Next
         </Button>
       </Modal.Footer>
-    </Form>
+    </FormControl>
   );
 }
 
-export default BranchDetails;
+export default NewBranchDetails;

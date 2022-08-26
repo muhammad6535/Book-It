@@ -48,3 +48,10 @@
     font-size: auto;
     margin: 5px;
   }
+  .deleteIcon{
+    
+  display: flex;
+  align-self: end;
+  margin: 10px 15px;
+  cursor: pointer;
+  }
