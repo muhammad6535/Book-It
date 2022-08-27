@@ -38,6 +38,7 @@ function BranchModal(props) {
             // id={props.data.id}
             className="workHoursModal"
             branchId={branchId}
+            saveCloseModal={handleClose}
           />
         ) : null}
       </Modal.Body>

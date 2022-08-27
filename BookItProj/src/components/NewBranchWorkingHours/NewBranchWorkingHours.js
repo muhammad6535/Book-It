@@ -28,7 +28,6 @@ function NewBranchWorkingHours(props) {
 
     //check if all inputs are filled
     if (workHours.length == 7) {
-      alert("here");
       workHours.forEach(async (wh, index) => {
         if (!!wh.dayNum) {
           let workFrom = wh.workFrom;
@@ -78,12 +77,12 @@ function NewBranchWorkingHours(props) {
           }
         }
       });
-      //insert workHours
+      alert("Branch added successfully")
+    props.saveCloseModal();
     } else {
       alert("Please fill all the workHours for the whole week");
     }
     //insert work hours
-    // props.saveCloseModal();
   };
 
   return (

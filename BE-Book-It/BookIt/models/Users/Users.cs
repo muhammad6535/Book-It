@@ -10,6 +10,8 @@ namespace BookIt.models
         public string UserName { get; set; }
         public string Password{ get; set; }
         public string Email { get; set; }
+        public string Phone { get; set; }
+
         public int OrgId { get; set; }
         [ForeignKey("OrgId")]
         public virtual Organization Organization { get; set; }

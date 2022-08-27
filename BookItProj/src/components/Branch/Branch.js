@@ -18,6 +18,7 @@ function Branch(props) {
   };
 
   const removeBranch = async () => {
+    if(window.confirm("Are you sure to remove Branch: "+props.data.name))
     try {
       let url = apiPath + "/Branch/RemoveBranch?branchId=" + branchId;
       const response = await axios.delete(url);
@@ -82,6 +83,7 @@ function Branch(props) {
               <BranchWorkingHours
                 id={props.data.id}
                 className="workHoursModal"
+                saveCloseModal={handleClose}
               />
             ) : null}
           </Modal.Body>

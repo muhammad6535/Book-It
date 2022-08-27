@@ -13,7 +13,7 @@ function SupportRep() {
     <div className="fullScreen">
       <NavBar />
       <div className="container">
-        <AppointementsList branchId={location.state.branchId}/>
+        <AppointementsList branchId={location?.state?.branchId}/>
         {/* <AppointmentScreen /> */}
       </div>
       <Footer />

@@ -69,7 +69,7 @@ function BranchWorkingHours(props) {
       }
     });
 
-    // props.saveCloseModal();
+    props.saveCloseModal();
   };
 
   return (

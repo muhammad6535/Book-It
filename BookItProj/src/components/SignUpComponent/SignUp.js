@@ -36,38 +36,41 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-// const navigate = useNavigate();
 
-export default function SignIn() {
+export default function SignUp() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+
+  const [orgName, setOrgName] = useState();
+  const [orgEmail, setOrgEmail] = useState();
+  const [orgPhone, setOrgPhone] = useState();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    try {
-      const response = await axios.get(
-        apiPath +
-          `/Users/UserNameValidation?userName=${userName}&password=${password}`
-      );
-      if (response.data.length == 0) {
-        const response = await axios.get(
+    if (!orgPhone || !orgName || !userName || !password || !orgEmail) {
+      alert("Please Fill all the details");
+    } else if (password != confirmPassword) {
+      alert("Two two passwords is not match");
+    } else {
+      try {
+        let url =
           apiPath +
-            `/Branch/BranchUserValidation?email=${userName}&password=${password}`
-        );
-        if (response.data.length == 0) {
-          alert("Error! User Not Found");
-        } else {
-            navigate("/SupportRep", { state: { branchId: response.data[0].id } });
-            console.log(response.data);
-          
-        }
-      } else {
-        navigate("/OrgManager", { state: { orgId: response.data.orgId } });
+          `/Organization/InsertOrganization?` +
+          `name=${orgName}` +
+          `&phone=${orgPhone}` +
+          `&email=${orgEmail}` +
+          `&userName=${userName}` +
+          `&password=${password}`;
+        const response = await axios.post(url);
+        console.log(response);
+        alert("Organization Registered Successfully");
+        navigate("/OrgManager", { state: { orgId: response.data.id } });
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -91,7 +94,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Up
           </Typography>
           <Box
             component="form"
@@ -103,11 +106,50 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              id="organizationName"
+              label="Organization Name"
+              name="organizationName"
+              autoComplete="Organization Name"
+              autoFocus
+              onChange={(e) => {
+                setOrgName(e.target.value);
+              }}
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="phone"
+              label="Organization Phone"
+              name="phone"
+              autoComplete="Organization Phone"
+              onChange={(e) => {
+                setOrgPhone(e.target.value);
+              }}
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Organization Email"
+              name="email"
+              autoComplete="Organization Email"
+              onChange={(e) => {
+                setOrgEmail(e.target.value);
+              }}
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="email"
               label="User Name"
               name="email"
               autoComplete="User Name"
-              autoFocus
               onChange={(e) => {
                 setUserName(e.target.value);
               }}
@@ -120,9 +162,22 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="password"
               onChange={(e) => {
                 setPassword(e.target.value);
+              }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="confirm Password"
+              type="password"
+              id="confirmPassword"
+              autoComplete="confirmPassword"
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
               }}
             />
             <FormControlLabel
@@ -135,17 +190,12 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" onClick={handleLinkClick} variant="body2">
                   Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2" onClick={()=>navigate("/SignUp")}>
-                  {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
