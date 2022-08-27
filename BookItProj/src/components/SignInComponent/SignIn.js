@@ -134,7 +134,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Small Test
             </Button>
             <Grid container>
               <Grid item xs>
