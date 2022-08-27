@@ -64,7 +64,7 @@ const AppointmentScreen = (props) => {
 
   useEffect(() => {
     parseAppointments(workHours, bookedAppointments);
-  }, [workHours, bookedAppointments]);
+  }, [workHours, bookedAppointments,workDay]);
 
   useEffect(async () => {
     //Booked Appointments
@@ -75,7 +75,7 @@ const AppointmentScreen = (props) => {
         "&date=" +
         selectedDate +
         "&serviceId=" +
-        selectedService.item.id
+        selectedService?.item?.id
     );
     setBookedAppointments(bookedApps);
   }, [selectedService, selectedDate, branchId]);
@@ -176,12 +176,12 @@ const AppointmentScreen = (props) => {
     let month = reversedDate[0];
     let year = reversedDate[2];
     var fixedFormatDate = year + "-" + month + "-" + day;
-    var wFrom = new moment(fixedFormatDate + "T" + workingHourss[0].workFrom);
-    var wTo = new moment(fixedFormatDate + "T" + workingHourss[0].workTo);
-    var bFrom = new moment(fixedFormatDate + "T" + workingHourss[0].breakFrom);
-    var bTo = new moment(fixedFormatDate + "T" + workingHourss[0].breakTo);
+    var wFrom = new moment(fixedFormatDate + "T" + workingHourss[0]?.workFrom);
+    var wTo = new moment(fixedFormatDate + "T" + workingHourss[0]?.workTo);
+    var bFrom = new moment(fixedFormatDate + "T" + workingHourss[0]?.breakFrom);
+    var bTo = new moment(fixedFormatDate + "T" + workingHourss[0]?.breakTo);
     var appointments = [];
-    bookedApps = bookedApps.map((app) => new moment(app) + "");
+    bookedApps = bookedApps?.map((app) => new moment(app) + "");
 
     for (let d = wFrom; d < wTo; d.add(timeAvg, "m")) {
       if (!(d >= bFrom && d < bTo)) {
@@ -192,7 +192,9 @@ const AppointmentScreen = (props) => {
     appointments = appointments.filter((app) => {
       return !bookedApps.includes(app.value + "");
     });
-    if (appointments.length > 0) setAvailableAppointments(appointments);
+    // if (appointments.length > 0)
+    console.log(appointments);
+    setAvailableAppointments(appointments);
   }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

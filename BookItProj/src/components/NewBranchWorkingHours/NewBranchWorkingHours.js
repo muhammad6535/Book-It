@@ -52,14 +52,14 @@ function NewBranchWorkingHours(props) {
           var breakParams =
             bf.length > 0 && bt.length > 0
               ? `&breakFrom=${bf}` + `&breakTo=${bt}`
-              : `&breakFrom=1900-01-01 13:00:00.000` +
-                `&breakTo=1900-01-01 13:00:00.000`;
+              : `&breakFrom=1900-01-01 00:00:00.000` +
+                `&breakTo=1900-01-01 00:00:00.000`;
 
           var workParams =
             bf.length > 0 && bt.length > 0
               ? `&workFrom=${wf}` + `&workTo=${wt}`
-              : `&workFrom=1900-01-01 13:00:00.000` +
-                `&workTo=1900-01-01 13:00:00.000`;
+              : `&workFrom=1900-01-01 00:00:00.000` +
+                `&workTo=1900-01-01 00:00:00.000`;
           var url =
             `${apiPath}/WorkHours/AddWorkHours?` +
             `BranchId=${props.branchId}` +
@@ -77,8 +77,8 @@ function NewBranchWorkingHours(props) {
           }
         }
       });
-      alert("Branch added successfully")
-    props.saveCloseModal();
+      alert("Branch added successfully");
+      props.saveCloseModal();
     } else {
       alert("Please fill all the workHours for the whole week");
     }
@@ -96,9 +96,6 @@ function NewBranchWorkingHours(props) {
               dayNum={index}
               workHours={workHours}
               setWorkHours={setWorkHours}
-              // branchId={props.id}
-              // setDataToUpdate={setDataToUpdate}
-              // dataToUpdate={dataToUpdate}
             />
           );
         })}

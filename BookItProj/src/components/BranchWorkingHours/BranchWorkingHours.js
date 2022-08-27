@@ -50,8 +50,8 @@ function BranchWorkingHours(props) {
         var breakParams =
           bf.length > 0 && bt.length > 0
             ? `&breakFrom=${bf}` + `&breakTo=${bt}`
-            : `&breakFrom=1900-01-01 13:00:00.000` +
-              `&breakTo=1900-01-01 13:00:00.000`;
+            : `&breakFrom=1900-01-01 00:00:00.000` +
+              `&breakTo=1900-01-01 00:00:00.000`;
         var url =
           `${apiPath}/WorkHours/UpdateWorkHours?` +
           `BranchId=${props.id}` +

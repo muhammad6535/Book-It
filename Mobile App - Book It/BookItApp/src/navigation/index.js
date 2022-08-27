@@ -17,6 +17,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeScreen" component={HomeScreen}></Stack.Screen>
         <Stack.Screen name="SignIn" component={SignInScreen}></Stack.Screen>
         <Stack.Screen name="SignUp" component={SignUpScreen}></Stack.Screen>
         <Stack.Screen
@@ -31,7 +32,6 @@ const Navigation = () => {
           name="NewPassword"
           component={NewPasswrodScreen}
         ></Stack.Screen>
-        <Stack.Screen name="HomeScreen" component={HomeScreen}></Stack.Screen>
         <Stack.Screen name="Appointment" component={Apponitment}></Stack.Screen>
         <Stack.Screen
           name="Confirmation"
