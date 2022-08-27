@@ -59,9 +59,8 @@ export default function SignIn() {
         if (response.data.length == 0) {
           alert("Error! User Not Found");
         } else {
-            navigate("/SupportRep", { state: { branchId: response.data[0].id } });
-            console.log(response.data);
-          
+          navigate("/SupportRep", { state: { branchId: response.data[0].id } });
+          console.log(response.data);
         }
       } else {
         navigate("/OrgManager", { state: { orgId: response.data.orgId } });
@@ -144,7 +143,11 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2" onClick={()=>navigate("/SignUp")}>
+                <Link
+                  href="#"
+                  variant="body2"
+                  onClick={() => navigate("/SignUp")}
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
