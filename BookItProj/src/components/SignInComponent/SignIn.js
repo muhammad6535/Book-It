@@ -51,6 +51,7 @@ export default function SignIn() {
         apiPath +
           `/Users/UserNameValidation?userName=${userName}&password=${password}`
       );
+      console.log(response);
       if (response.status == 200) {
         navigate("/OrgManager", { state: { orgId: response.data.orgId } });
       } else {
