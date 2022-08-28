@@ -25,6 +25,7 @@ namespace BookIt
         {
             services.AddRazorPages();
             services.AddControllers();
+            services.AddCors();
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             services.AddCors(option =>
@@ -36,9 +37,15 @@ namespace BookIt
             });
         }
 
+        //var builder = BookIt.CreateBuilder(new WebApplicationOptions
+        //{
+        //    EnvironmentName = Environments.Staging
+        //});
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            env.EnvironmentName = Environments.Production;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,18 +59,19 @@ namespace BookIt
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors();
 
             app.UseRouting();
-            app.UseCors();
+            app.UseCors(option => {
+            option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            });
 
             app.UseAuthorization();
-            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
-            app.UseCors();
 
 
             app.UseEndpoints(endpoints =>

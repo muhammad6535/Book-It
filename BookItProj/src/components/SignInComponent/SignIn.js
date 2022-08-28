@@ -51,20 +51,33 @@ export default function SignIn() {
         apiPath +
           `/Users/UserNameValidation?userName=${userName}&password=${password}`
       );
-      if (response.data.length == 0) {
+      if (response.status == 200) {
+        navigate("/OrgManager", { state: { orgId: response.data.orgId } });
+      } else {
         const response = await axios.get(
           apiPath +
             `/Branch/BranchUserValidation?email=${userName}&password=${password}`
         );
-        if (response.data.length == 0) {
-          alert("Error! User Not Found");
-        } else {
+        if(response.status == 200) {
           navigate("/SupportRep", { state: { branchId: response.data[0].id } });
-          console.log(response.data);
+        } else {
+          alert("Error! User Not Found");
         }
-      } else {
-        navigate("/OrgManager", { state: { orgId: response.data.orgId } });
       }
+      // if (response.data.length == 0) {
+      //   const response = await axios.get(
+      //     apiPath +
+      //       `/Branch/BranchUserValidation?email=${userName}&password=${password}`
+      //   );
+      //   if (response.data.length == 0) {
+      //     alert("Error! User Not Found");
+      //   } else {
+      //     navigate("/SupportRep", { state: { branchId: response.data[0].id } });
+      //     console.log(response.data);
+      //   }
+      // } else {
+      //   navigate("/OrgManager", { state: { orgId: response.data.orgId } });
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -137,11 +150,11 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <Link href="#" onClick={handleLinkClick} variant="body2">
                   Forgot password?
                 </Link>
-              </Grid>
+              </Grid> */}
               <Grid item>
                 <Link
                   href="#"

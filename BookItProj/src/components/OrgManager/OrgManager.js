@@ -1,4 +1,3 @@
-// import { Button } from "bootstrap";
 import React, { Component, useEffect, useState } from "react";
 import Branch from "../Branch/Branch";
 import Footer from "../Footer/Footer";
@@ -30,14 +29,15 @@ function OrgManager(props) {
     <div>
       <NavBarOrgManager show={show} setShow={setShow} />
       <div className="grid-container">
-        {branches &&
+        {branches.length  ? 
           branches?.map((branch) => (
             <Branch
               updateBranches={getBranches}
               key={branch.id}
               data={branch}
             />
-          ))}
+          ))
+           : <></>}
       </div>
       <NewBranchModal
         show={show}
