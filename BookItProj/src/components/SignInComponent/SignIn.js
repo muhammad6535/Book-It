@@ -52,33 +52,19 @@ export default function SignIn() {
           `/Users/UserNameValidation?userName=${userName}&password=${password}`
       );
       console.log(response);
-      if (response.status == 200 && response.status.length>0) {
+      if (response.status == 200 && response.status.length == 0) {
         navigate("/OrgManager", { state: { orgId: response.data.orgId } });
       } else {
         const response = await axios.get(
           apiPath +
             `/Branch/BranchUserValidation?email=${userName}&password=${password}`
         );
-        if(response.status == 200 && response.status.length>0) {
+        if(response.status == 200 && response.status.length == 0) {
           navigate("/SupportRep", { state: { branchId: response.data[0].id } });
         } else {
           alert("Error! User Not Found");
         }
       }
-      // if (response.data.length == 0) {
-      //   const response = await axios.get(
-      //     apiPath +
-      //       `/Branch/BranchUserValidation?email=${userName}&password=${password}`
-      //   );
-      //   if (response.data.length == 0) {
-      //     alert("Error! User Not Found");
-      //   } else {
-      //     navigate("/SupportRep", { state: { branchId: response.data[0].id } });
-      //     console.log(response.data);
-      //   }
-      // } else {
-      //   navigate("/OrgManager", { state: { orgId: response.data.orgId } });
-      // }
     } catch (error) {
       console.log(error);
     }
