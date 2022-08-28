@@ -52,14 +52,14 @@ export default function SignIn() {
           `/Users/UserNameValidation?userName=${userName}&password=${password}`
       );
       console.log(response);
-      if (response.status == 200) {
+      if (response.status == 200 && response.status.length>0) {
         navigate("/OrgManager", { state: { orgId: response.data.orgId } });
       } else {
         const response = await axios.get(
           apiPath +
             `/Branch/BranchUserValidation?email=${userName}&password=${password}`
         );
-        if(response.status == 200) {
+        if(response.status == 200 && response.status.length>0) {
           navigate("/SupportRep", { state: { branchId: response.data[0].id } });
         } else {
           alert("Error! User Not Found");
