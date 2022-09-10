@@ -27,7 +27,7 @@ const ActionItemList = (props) => {
         const response = await axios.delete(
           apiPath + "/Appointment/RemoveAppointment?id=" + actionItem.id
         );
-        props.updateTable(props.branchId, actionItem.date);
+        props.updateTable(props.branchId, actionItem.dueDate);
         console.log(response);
       } catch (error) {
         console.log(error);

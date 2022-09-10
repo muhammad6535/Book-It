@@ -9,6 +9,8 @@ function ActionItemForum(props) {
   const [branchId, setBranchId] = useState(props.branchId);
 
   const [state, setState] = useState([]);
+  const [date, setDate] = useState([]);
+
   const handleChange = (event) => {
     event.persist();
     setState((prevState) => ({
@@ -21,6 +23,7 @@ function ActionItemForum(props) {
           ? event.target.value
           : prevState.dueDate,
     }));
+    setDate(event.target.value);
   };
 
   const deleteActionItemFromState = (index) => {
@@ -38,7 +41,7 @@ function ActionItemForum(props) {
     const url =
       apiPath +
       `/Appointment/Appointments?BranchId=${bId || branchId}` +
-       `&date=${dueDate || state.dueDate}` ;
+       `&date=${dueDate || state.dueDate || date}` ;
     const appointments = axios.get(url).then((res) => {
       setState(res.data);
     });
