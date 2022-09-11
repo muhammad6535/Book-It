@@ -27,10 +27,10 @@ const DropdownList = (props) => {
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
           setValue(item.value);
-          setIsFocus(false);
+          // setIsFocus(false);
+          props.selectedAppointment && props.selectedAppointment(item);
           props.getSelectedItem && props.getSelectedItem(item);
           props.getSelectedBranch && props.getSelectedBranch(item.value);
-          props.selectedAppointment && props.selectedAppointment(item);
         }}
         renderLeftIcon={() => (
           <AntDesign

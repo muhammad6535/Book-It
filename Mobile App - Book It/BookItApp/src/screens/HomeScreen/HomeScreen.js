@@ -8,11 +8,15 @@ import apiPath from "../../hooks/apiPath";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [providers, setproviders] = useState([getData()]);
+
   const [searchQuery, setSearchQuery] = React.useState("");
-  const onChangeSearch = (query) => setSearchQuery(query);
+  const onChangeSearch = (query) => {
+    setSearchQuery(query);
+    setproviders([]);
+  };
 
   // Get all Organizations from the DB
-  const [providers, setproviders] = useState([getData()]);
   async function getData() {
     let { data } = await axios.get(apiPath + "/Organization/Organizations");
     setproviders(data);
@@ -23,12 +27,7 @@ const HomeScreen = () => {
       <TextPaper variant="displayLarge" style={styles.Title}>
         Choose Organization
       </TextPaper>
-      <Searchbar
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-        style={styles.searchBar}
-      />
+    
       <View style={styles.container}>
         {providers.map((item, index) => (
           <OrganizationCard key={index} style={styles.item} data={item} />
@@ -52,6 +51,10 @@ const styles = StyleSheet.create({
   },
   Title: {
     fontSize: 40,
+    alignItems:"center",
+    justifyContent: "center",
+    alignContent: "center",
+    alignSelf: 'center'
   },
   searchBar: {
     marginTop: 30,

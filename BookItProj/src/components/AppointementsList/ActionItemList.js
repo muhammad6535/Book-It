@@ -56,7 +56,6 @@ const ActionItemList = (props) => {
                   <td>{actionItem.customerName}</td>
                   <td>{actionItem.serviceId}</td>
                   <td>{actionItem.date.split("T")[1]}</td>
-
                   <td>
                     {/* <button
                   type="button"

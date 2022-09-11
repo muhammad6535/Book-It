@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
@@ -64,7 +64,7 @@ const AppointmentScreen = (props) => {
 
   useEffect(() => {
     parseAppointments(workHours, bookedAppointments);
-  }, [workHours, bookedAppointments,workDay]);
+  }, [workHours, bookedAppointments]);
 
   useEffect(async () => {
     //Booked Appointments
@@ -119,6 +119,8 @@ const AppointmentScreen = (props) => {
     if (flag == 1) {
       insertAppointment();
       navigation.navigate("Confirmation", { phone: phoneNumber });
+    } else {
+      Alert.alert("Error! please fill all the inputs as well");
     }
   };
 
@@ -188,7 +190,6 @@ const AppointmentScreen = (props) => {
         appointments.push({ label: d.format("HH:mm"), value: new moment(d) });
       }
     }
-
     appointments = appointments.filter((app) => {
       return !bookedApps.includes(app.value + "");
     });
@@ -233,7 +234,6 @@ const AppointmentScreen = (props) => {
           data={availableAppointments}
           selectedAppointment={setSelectedAppointment}
         />
-
         <CustomButton text="Submit" onPress={onRegisterPressed} />
       </View>
     </ScrollView>

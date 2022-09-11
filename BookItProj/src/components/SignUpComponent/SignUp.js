@@ -193,7 +193,7 @@ export default function SignUp() {
               Sign Up
             </Button>
             <Grid container>
-              
+            
             </Grid>
           </Box>
         </Box>

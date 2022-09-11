@@ -1,7 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import Navigation from './src/navigation'
-
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import Navigation from "./src/navigation";
 
 export default function App() {
   return (
@@ -13,7 +12,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   root: {
-    paddingTop:'10%',
+    paddingTop: "10%",
     flex: 1,
     backgroundColor: "#F9FBFC",
   },
